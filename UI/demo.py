@@ -1,22 +1,24 @@
 import tkinter as tk
 from tkinter import Canvas
 
+# Function to open the attendance system
+# This function will be called when the user clicks on the "TAKE ATTENDANCE" button
 def open_attendance(root):
-    root.withdraw()
-    attendance = tk.Toplevel()
+    root.withdraw() # hide the main window
+    attendance = tk.Toplevel() # create a new window
     attendance.title("Attendance System")
     attendance.geometry("1280x800")
-    attendance.configure(bg="#1B2B40")
+    attendance.configure(bg="#1B2B40") # set the background color
     
     id_entry = tk.Entry(attendance, 
                         font=("Arial", 16), 
                         fg="#3498DB", 
                         bg="#1B2B40", 
                         bd=5, 
-                        relief="ridge", 
+                        relief="ridge", # set the border style
                         justify="center")
-    id_entry.insert(0, "ID")
-    id_entry.place(x=440, y=150, width=400, height=50)
+    id_entry.insert(0, "ID") # set the default text
+    id_entry.place(x=440, y=150, width=400, height=50) 
     
     
     name_entry = tk.Entry(attendance, 
@@ -68,7 +70,8 @@ def open_attendance(root):
                          command=go_back)
     back_btn.place(x=530, y=650)
 
-
+# Function to open the register
+# This function will be called when the user clicks on the "REGISTER" button
 def open_register(root):
     root.withdraw()
     register = tk.Toplevel()
@@ -81,7 +84,7 @@ def open_register(root):
                      font=("Arial", 24, "bold"), 
                      fg="white", 
                      bg="#2C3E50")
-    label.pack(pady=20)
+    label.pack(pady=20) 
     
     name_entry = tk.Entry(register, 
                           font=("Arial", 16), 
@@ -117,6 +120,8 @@ def open_register(root):
                          command=go_back)
     back_btn.pack(pady=20)
 
+# Function to create the main window
+# This function will be called when the program starts
 def create_main():
     root = tk.Tk()
     root.title("Face Recognition Attendance System")
@@ -138,8 +143,8 @@ def create_main():
     
     register_btn = tk.Button(root, 
                              text='REGISTER', 
-                             **button_style, 
-                             command=lambda: open_register(root))
+                             **button_style, # unpack the dictionary
+                             command=lambda: open_register(root)) # call the function when the button is clicked
     register_btn.place(x=200, y=450)
     
     take_attendance_btn = tk.Button(root, 
