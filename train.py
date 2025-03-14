@@ -153,6 +153,19 @@ for idx in range(len(ranked_list)):
 #|%%--%%| <fYlFM00dTN|ue7SneVgqt>
 
 # Luu file npoy
+# THem Labels cho train_images_preprocessed 
+train_labels = np.array(train_labels)
+test_labels = np.array(test_labels)
+data_labels = np.concatenate((train_labels, test_labels))
 
-np.save('train_images_preprocessed.npy', train_images_preprocessed)
-np.save('test_images_preprocessed.npy', test_images_preprocessed)
+data_labels.shape
+#|%%--%%| <ue7SneVgqt|3PYuc1k0lD>
+
+
+data_preprocessed = np.concatenate((train_images_preprocessed, test_images_preprocessed))
+data_preprocessed.shape
+
+data_preprocessed = np.concatenate((data_preprocessed, data_labels.reshape(-1, 1)), axis=1)
+data_preprocessed.shape
+
+np.save('data_preprocessed.npy', data_preprocessed)
