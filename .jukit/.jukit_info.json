@@ -1,0 +1,1 @@
+{"cmd": "\n# Luu file npoy\n\nnp.save('train_images_preprocessed.npy', train_images_preprocessed)\nnp.save('test_images_preprocessed.npy', test_images_preprocessed)", "outhist_cell": "NONE", "outhist_title": "BMQDp0hdjw", "is_md": 0, "cmd_opts": " --cell_id=ue7SneVgqt -s", "import_complete": 1, "terminal": "kitty"}
