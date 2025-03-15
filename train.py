@@ -169,3 +169,8 @@ data_preprocessed = np.concatenate((data_preprocessed, data_labels.reshape(-1, 1
 data_preprocessed.shape
 
 np.save('data_preprocessed.npy', data_preprocessed)
+
+#|%%--%%| <3PYuc1k0lD|aB8h31wHuX>
+
+data_preprocessed.shape
+
