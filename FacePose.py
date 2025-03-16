@@ -28,6 +28,7 @@ face_mesh = mp_face_mesh.FaceMesh(
 # Mở camera
 cap = cv2.VideoCapture(0)
 def DetectFace(cap):
+    index =0
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -109,7 +110,8 @@ def DetectFace(cap):
                 #Thêm range của các pose để chụp tạm thời bấm t để chụp
                 key = cv2.waitKey(1) & 0xFF
                 if key == ord('t'):
-                    cv2.imwrite("cropped_face.jpg", face_crop)
+                    cv2.imwrite("cropped_face_"+str(index)+".jpg", face_crop)
+                    index+=1
         # Hiển thị khung hình kết quả
         cv2.imshow("MediaPipe Face Mesh - Head Pose Estimation", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
