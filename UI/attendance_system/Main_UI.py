@@ -86,4 +86,4 @@ class Main_UI:
 
     def open_register(self):
         self.root.withdraw()
-        Register(self.root)
+        Register(self.root, self.root)
