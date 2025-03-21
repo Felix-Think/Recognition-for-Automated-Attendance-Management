@@ -1,12 +1,21 @@
 import tkinter as tk
 import pymysql
 import time
+import FacePose as FP 
+import cv2
+from PIL import Image, ImageTk
+
 class Register:
     def __init__(self, root, main_ui):
         #Ket noi SQL
         self.conn = pymysql.connect(host="localhost", user="felix", password="5812", database="NCKH")
         self.cursor = self.conn.cursor()
 
+        
+        # Start video capture
+        self.FacePose = FP.FaceEstimator()
+        self.cap =  self.FacePose.cap  # FacePose object
+        self.update_video_frame()
 
         self.root = tk.Toplevel(root)  # Mở cửa sổ mới thay vì dùng root
         self.main_ui = main_ui  # Lưu lại cửa sổ chính để hiện lại sau này
@@ -105,15 +114,25 @@ class Register:
             print(f"Loi: {e}")
 
 
-        
-    #def take_attendance(self):
-     #   check_insert = self.insert_data()
-      #  if check_insert == False:
-       #     print("Insert failed'")
-        #    # Thong bao loi bang am thanh pptsx3
-       # else:
-            # Thong bao thanh  va hien camera de chup anh
-             
+    def update_video_frame(self):
+        while True:
+            ret, frame = self.cap.read()
+            if not ret:
+                break
+            
+            
+            # Hiển thị khung hình
+            cv2.imshow("FacePose Detection", frame)
+
+            # Nhấn 'q' để thoát
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+        self.cap.release()
+        cv2.destroyAllWindows()
+
+
+
     
     def on_close(self):
         self.main_ui.deiconify()  # Hiện lại Main_UI khi Register đóng

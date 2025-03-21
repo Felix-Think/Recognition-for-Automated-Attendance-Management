@@ -18,6 +18,7 @@ class Main_UI:
 
         # Load images
         self.register_image = self.load_img(r"../Images/register.png", (200, 300))
+        self.register_image = self.load_img(r"../Images/register.png", (200, 200))
         self.attendance_image = self.load_img(r"../Images/attendance.png", (200, 300))
         self.view_image = self.load_img(r"../Images/view.png", (250, 250))
 
