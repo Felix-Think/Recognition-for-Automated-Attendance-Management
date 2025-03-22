@@ -9,7 +9,13 @@ from PIL import Image, ImageTk
 class Register:
     def __init__(self, root, main_ui):
         #Ket noi SQL
-        self.conn = pymysql.connect(host="localhost", user="felix", password="5812", database="NCKH")
+        DB_CONFIG = {
+            'host': '192.168.1.6',  # IP của máy bạn
+            'user': 'felix',
+            'password': '5812',
+            'database': 'NCKH'
+        }
+        self.conn = pymysql.connect(**DB_CONFIG)
         self.cursor = self.conn.cursor()
 
         self.root = tk.Toplevel(root)  # Mở cửa sổ mới thay vì dùng root
