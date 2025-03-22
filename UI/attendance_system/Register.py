@@ -1,8 +1,9 @@
-import tkinter as tk
+import tkinter as tk 
 import pymysql
 import time
 import FacePose as FP 
 import cv2
+import os
 from PIL import Image, ImageTk
 
 class Register:
@@ -10,12 +11,6 @@ class Register:
         #Ket noi SQL
         self.conn = pymysql.connect(host="localhost", user="felix", password="5812", database="NCKH")
         self.cursor = self.conn.cursor()
-
-        
-        # Start video capture
-        self.FacePose = FP.FaceEstimator()
-        self.cap =  self.FacePose.cap  # FacePose object
-        self.update_video_frame()
 
         self.root = tk.Toplevel(root)  # Mở cửa sổ mới thay vì dùng root
         self.main_ui = main_ui  # Lưu lại cửa sổ chính để hiện lại sau này
@@ -41,11 +36,11 @@ class Register:
         #self.window_text.place(x=100, y=100)
 
         # Khung màu xanh dương #004AAD
-        self.blue_frame = tk.Frame(self.root, bg="#2C3E50", highlightbackground="#004AAD", highlightthickness=3)
-        self.blue_frame.place(x=750, y=200, width=300, height=150)
+        self.img_frame = tk.Frame(self.root, bg="#2C3E50", highlightbackground="#004AAD", highlightthickness=3)
+        self.img_frame.place(x=750, y=200, width=300, height=150)
 
-        self.blue_label = tk.Label(self.blue_frame, text="MÀU Ô\n#004AAD", bg="#2C3E50", fg="white", font=("Arial", 12, "bold"))
-        self.blue_label.pack(expand=True)
+        self.img_label = tk.Label(self.img_frame, image = None,  text="MÀU Ô\n#004AAD", bg="#2C3E50", fg="white", font=("Arial", 12, "bold"))
+        self.img_label.pack(expand=True)
 
         # ID
         self.btn_id = tk.Label(self.root, text="ID", bg="#00E5FF", fg="black", font=("Arial", 12, "bold"), width=15, height=2)
@@ -113,28 +108,65 @@ class Register:
         except Exception as e:
             print(f"Loi: {e}")
 
-
-    def update_video_frame(self):
+        estimator = FP.FaceEstimator(camera_index=0)
+            
         while True:
-            ret, frame = self.cap.read()
+            ret, frame = estimator.cap.read()
             if not ret:
                 break
             
+            face_crop = estimator.recognization(frame)  # Nhận diện khuôn mặt
+            if face_crop is not None:
+                cv2.imshow("Face Crop", face_crop)  # Hiển thị khuôn mặt crop nếu có
+
+            cv2.imshow("Camera", frame)  # Hiển thị camera
             
-            # Hiển thị khung hình
-            cv2.imshow("FacePose Detection", frame)
+            key = cv2.waitKey(1) & 0xFF
+            if key == ord('t'):  # Nhấn 't' để chụp ảnh
+                if face_crop is not None:
+                    filename = f"face_{estimator.index}.png"
+                    #Tao foler chua anh, name folder la ID
+                    path = ID
+                    root = "Dataset"
+                    root_dir = os.path.join(root, path)
+                    try:
+                        if not os.path.exists(root):
+                            os.mkdir(root)
+                        os.mkdir(root_dir)
+                    except FileExistsError:
+                        pass
+                    path_file = os.path.join(root_dir, filename)
+                    cv2.imwrite(path_file, face_crop)
+                    print(f"Ảnh được lưu: {path_file}")
+                    estimator.index += 1  # Tăng số thứ tự file ảnh
 
-            # Nhấn 'q' để thoát
-            if cv2.waitKey(1) & 0xFF == ord('q'):
+            elif key == ord('q'):  # Nhấn 'q' để thoát
+
                 break
-
-        self.cap.release()
-        cv2.destroyAllWindows()
-
-
-
+        estimator.release()
+        self.get_img()
     
+    def get_img(self):
+        img_id = self.entry_id.get()
+        img_path = f"Dataset/{img_id}"
+        try:
+            files = sorted(os.listdir(img_path))
+            if not files:
+                print("Khong co anh")
+                return
+            latest_img = files[-1]
+            img = Image.open(os.path.join(img_path, latest_img))
+            img = img.resize((300, 150))
+            img = ImageTk.PhotoImage(img)
+            # Hien thi anh len label
+            self.img_label.config(image = img) # Hien thi anh len label
+            self.img_label.image = img # Giu tham chieu toi anh
+        except Exception as e:
+            print(f"Loi: {e}")
+
     def on_close(self):
+        """Handle the window close event."""
         self.main_ui.deiconify()  # Hiện lại Main_UI khi Register đóng
         self.root.destroy()
+
 

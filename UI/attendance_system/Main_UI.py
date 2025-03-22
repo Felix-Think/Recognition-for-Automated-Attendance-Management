@@ -17,10 +17,9 @@ class Main_UI:
         self.canvas.create_rectangle(100, 50, 1180, 100, fill="#0072FF", outline="")
 
         # Load images
-        self.register_image = self.load_img(r"../Images/register.png", (200, 300))
-        self.register_image = self.load_img(r"../Images/register.png", (200, 200))
-        self.attendance_image = self.load_img(r"../Images/attendance.png", (200, 300))
-        self.view_image = self.load_img(r"../Images/view.png", (250, 250))
+        self.register_image = self.load_img(os.path.join("..", "Images", "register.png"), (200, 300))
+        self.attendance_image = self.load_img(os.path.join("..", "Images", "attendance.png"), (200, 300))
+        self.view_image = self.load_img(os.path.join("..", "Images", "view.png"), (250, 250))
 
         # Create buttons with images
         self.create_buttons()
