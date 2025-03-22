@@ -33,17 +33,17 @@ class Register:
         self.blue_label.pack(expand=True)
 
         # Nút màu xanh cyan #00E5FF
-        self.btn_cyan_1 = tk.Button(self.root, text="#00E5FF", bg="#00E5FF", fg="black", font=("Arial", 12, "bold"), width=15, height=2)
+        self.btn_cyan_1 = tk.Button(self.root, bg="#00E5FF", fg="black", font=("Arial", 12, "bold"), width=15, height=2)
         self.btn_cyan_1.place(x=150, y=400)
 
-        self.btn_cyan_2 = tk.Button(self.root, text="#00E5FF", bg="#00E5FF", fg="black", font=("Arial", 12, "bold"), width=15, height=2)
+        self.btn_cyan_2 = tk.Button(self.root, bg="#00E5FF", fg="black", font=("Arial", 12, "bold"), width=15, height=2)
         self.btn_cyan_2.place(x=150, y=500)
 
         # Nút màu xanh dương #3498DB
-        self.btn_blue_1 = tk.Button(self.root, text="#3498DB", bg="#3498DB", fg="black", font=("Arial", 12, "bold"), width=15, height=2)
+        self.btn_blue_1 = tk.Button(self.root, bg="#3498DB", fg="black", font=("Arial", 12, "bold"), width=15, height=2)
         self.btn_blue_1.place(x=350, y=400)
 
-        self.btn_blue_2 = tk.Button(self.root, text="#3498DB", bg="#3498DB", fg="black", font=("Arial", 12, "bold"), width=15, height=2)
+        self.btn_blue_2 = tk.Button(self.root, bg="#3498DB", fg="black", font=("Arial", 12, "bold"), width=15, height=2)
         self.btn_blue_2.place(x=350, y=500)
 
         # Nút viền xanh cyan
