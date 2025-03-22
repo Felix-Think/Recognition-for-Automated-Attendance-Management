@@ -3,7 +3,7 @@ from tkinter import Canvas
 from PIL import Image, ImageTk
 from Attendance import Attendance
 from Register import Register
-
+import os
 class Main_UI:
     def __init__(self, root):
         self.root = root
