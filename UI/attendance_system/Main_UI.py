@@ -3,7 +3,7 @@ from tkinter import Canvas
 from PIL import Image, ImageTk
 from Attendance import Attendance
 from Register import Register
-
+import os
 class Main_UI:
     def __init__(self, root):
         self.root = root
@@ -17,9 +17,9 @@ class Main_UI:
         self.canvas.create_rectangle(100, 50, 1180, 100, fill="#0072FF", outline="")
 
         # Load images
-        self.register_image = self.load_img(r"UI/Images/register.png", (200, 200))
-        self.attendance_image = self.load_img(r"UI/Images/attendance.png", (200, 300))
-        self.view_image = self.load_img(r"UI/Images/view.png", (250, 250))
+        self.register_image = self.load_img(os.path.join(".", "UI","Images", "register.png"), (200, 300))
+        self.attendance_image = self.load_img(os.path.join(".", "UI", "Images", "attendance.png"), (200, 300))
+        self.view_image = self.load_img(os.path.join(".",  "UI","Images", "view.png"), (250, 250))
 
         # Create buttons with images
         self.create_buttons()

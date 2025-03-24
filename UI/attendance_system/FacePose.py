@@ -36,113 +36,79 @@ class FaceEstimator:
         return pitch, yaw, roll
     
     def DetectPose(self, frame):
+        """
+        Detects the head pose from the given frame using MediaPipe Face Mesh.
+        :param frame: Input frame (BGR) from OpenCV.
+        :return: Tuple (pitch, yaw, roll) if successful, otherwise None.
+        """
+        # Flip the frame horizontally for a mirrored view
         frame = cv2.flip(frame, 1)
         h, w, _ = frame.shape
 
-        # Chuyển đổi màu từ BGR sang RGB và xử lý với MediaPipe
+        # Convert the frame to RGB for MediaPipe processing
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = self.face_mesh.process(rgb_frame)
 
-        if results.multi_face_landmarks:
-            for face_landmarks in results.multi_face_landmarks:
-                # Lấy các điểm landmark cần thiết cho ước tính head pose
-                image_points = np.array([
-                    (face_landmarks.landmark[1].x * w, face_landmarks.landmark[1].y * h),    # Nose tip
-                    (face_landmarks.landmark[152].x * w, face_landmarks.landmark[152].y * h),  # Chin
-                    (face_landmarks.landmark[33].x * w, face_landmarks.landmark[33].y * h),    # Left eye outer corner
-                    (face_landmarks.landmark[263].x * w, face_landmarks.landmark[263].y * h),  # Right eye outer corner
-                    (face_landmarks.landmark[61].x * w, face_landmarks.landmark[61].y * h),    # Left mouth corner
-                    (face_landmarks.landmark[291].x * w, face_landmarks.landmark[291].y * h)   # Right mouth corner
-                ], dtype="double")
+        if not results.multi_face_landmarks:
+            return 0,0,0  # No face detected
 
-                # Các điểm 3D chuẩn của khuôn mặt (đơn vị mm)
-                model_points = np.array([
-                    (0.0, 0.0, 0.0),            # Nose tip
-                    (0.0, -63.6, -12.5),        # Chin
-                    (-43.3, 32.7, -26.0),       # Left eye outer corner
-                    (43.3, 32.7, -26.0),        # Right eye outer corner
-                    (-28.9, -28.9, -24.1),      # Left mouth corner
-                    (28.9, -28.9, -24.1)        # Right mouth corner
-                ])
+        # Process the first detected face
+        face_landmarks = results.multi_face_landmarks[0]
 
-                # Xây dựng ma trận camera giả định
-                focal_length = w
-                center = (w / 2, h / 2)
-                camera_matrix = np.array([
-                    [focal_length, 0, center[0]],
-                    [0, focal_length, center[1]],
-                    [0, 0, 1]
-                ], dtype="double")
+        # Extract 2D image points for head pose estimation
+        image_points = np.array([
+            (face_landmarks.landmark[1].x * w, face_landmarks.landmark[1].y * h),    # Nose tip
+            (face_landmarks.landmark[152].x * w, face_landmarks.landmark[152].y * h),  # Chin
+            (face_landmarks.landmark[33].x * w, face_landmarks.landmark[33].y * h),    # Left eye outer corner
+            (face_landmarks.landmark[263].x * w, face_landmarks.landmark[263].y * h),  # Right eye outer corner
+            (face_landmarks.landmark[61].x * w, face_landmarks.landmark[61].y * h),    # Left mouth corner
+            (face_landmarks.landmark[291].x * w, face_landmarks.landmark[291].y * h)   # Right mouth corner
+        ], dtype="double")
 
-                # Giả sử không có méo ảnh
-                dist_coeffs = np.zeros((4, 1))
+        # Define 3D model points for the face
+        model_points = np.array([
+            (0.0, 0.0, 0.0),            # Nose tip
+            (0.0, -63.6, -12.5),        # Chin
+            (-43.3, 32.7, -26.0),       # Left eye outer corner
+            (43.3, 32.7, -26.0),        # Right eye outer corner
+            (-28.9, -28.9, -24.1),      # Left mouth corner
+            (28.9, -28.9, -24.1)        # Right mouth corner
+        ])
 
-                # Tính toán head pose sử dụng hàm solvePnP
-                success, rotation_vector, translation_vector = cv2.solvePnP(
-                    model_points, image_points, camera_matrix, dist_coeffs
-                )
-                if success:
-                    # Chuyển vector quay thành ma trận quay và tính góc Euler
-                    R, _ = cv2.Rodrigues(rotation_vector)
-                    pitch, yaw, roll = self.rotationMatrixToEulerAngles(R)
-    def TakePicture(self, frame):
-        """
-        Xử lý khung hình:
-          - Lật khung hình, chuyển đổi màu cho MediaPipe
-          - Xử lý tìm landmark, tính head pose bằng solvePnP
-          - Vẽ thông tin head pose lên khung hình
-          - Cho phép chụp ảnh khuôn mặt khi nhấn 't'
-        """
-        # Lật khung hình để tạo cảm giác mirror
-        frame = cv2.flip(frame, 1)
-        h, w, _ = frame.shape
+        # Define the camera matrix
+        focal_length = w
+        center = (w / 2, h / 2)
+        camera_matrix = np.array([
+            [focal_length, 0, center[0]],
+            [0, focal_length, center[1]],
+            [0, 0, 1]
+        ], dtype="double")
 
-        # Chuyển đổi màu từ BGR sang RGB và xử lý với MediaPipe
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        results = self.face_mesh.process(rgb_frame)
+        # Assume no lens distortion
+        dist_coeffs = np.zeros((4, 1))
 
-        if results.multi_face_landmarks:
-            for face_landmarks in results.multi_face_landmarks:
-                # Lấy các điểm landmark cần thiết cho ước tính head pose
-                image_points = np.array([
-                    (face_landmarks.landmark[1].x * w, face_landmarks.landmark[1].y * h),    # Nose tip
-                    (face_landmarks.landmark[152].x * w, face_landmarks.landmark[152].y * h),  # Chin
-                    (face_landmarks.landmark[33].x * w, face_landmarks.landmark[33].y * h),    # Left eye outer corner
-                    (face_landmarks.landmark[263].x * w, face_landmarks.landmark[263].y * h),  # Right eye outer corner
-                    (face_landmarks.landmark[61].x * w, face_landmarks.landmark[61].y * h),    # Left mouth corner
-                    (face_landmarks.landmark[291].x * w, face_landmarks.landmark[291].y * h)   # Right mouth corner
-                ], dtype="double")
+        # Solve for head pose using solvePnP
+        success, rotation_vector, translation_vector = cv2.solvePnP(
+            model_points, image_points, camera_matrix, dist_coeffs, flags=cv2.SOLVEPNP_ITERATIVE
+        )
 
-                # Các điểm 3D chuẩn của khuôn mặt (đơn vị mm)
-                model_points = np.array([
-                    (0.0, 0.0, 0.0),            # Nose tip
-                    (0.0, -63.6, -12.5),        # Chin
-                    (-43.3, 32.7, -26.0),       # Left eye outer corner
-                    (43.3, 32.7, -26.0),        # Right eye outer corner
-                    (-28.9, -28.9, -24.1),      # Left mouth corner
-                    (28.9, -28.9, -24.1)        # Right mouth corner
-                ])
+        if not success:
+            return 0,0,0  # Head pose estimation failed
 
-                # Xây dựng ma trận camera giả định
-                focal_length = w
-                center = (w / 2, h / 2)
-                camera_matrix = np.array([
-                    [focal_length, 0, center[0]],
-                    [0, focal_length, center[1]],
-                    [0, 0, 1]
-                ], dtype="double")
+        # Refine the pose estimation using solvePnPRefineLM
+        rotation_vector, translation_vector = cv2.solvePnPRefineLM(
+            model_points, image_points, camera_matrix, dist_coeffs, rotation_vector, translation_vector
+        )
 
-                # Tính toán bounding box của khuôn mặt từ tất cả các landmark
-                all_points = np.array([[lm.x * w, lm.y * h] for lm in face_landmarks.landmark])
-                x_min, y_min = np.min(all_points, axis=0).astype(int)
-                x_max, y_max = np.max(all_points, axis=0).astype(int)
-                margin = 10
-                x_min = max(x_min - margin, 0)
-                y_min = max(y_min - margin, 0)
-                x_max = min(x_max + margin, w)
-                y_max = min(y_max + margin, h)
-                face_crop = frame[y_min:y_max, x_min:x_max]
-                return face_crop
+        # Convert rotation vector to rotation matrix
+        rotation_matrix, _ = cv2.Rodrigues(rotation_vector)
+
+        # Calculate Euler angles (pitch, yaw, roll) from the rotation matrix
+        pitch, yaw, roll = self.rotationMatrixToEulerAngles(rotation_matrix)
+        if pitch is None or yaw is None or roll is None:
+            return 0, 0, 0
+        else:
+            return pitch, yaw, roll
     
     def recognization(self, frame):
         """
@@ -169,7 +135,7 @@ class FaceEstimator:
             face_crop = frame[y_min:y_max, x_min:x_max]
             return face_crop
         else:
-            return None
+            return frame
 
     def release(self):
         """
