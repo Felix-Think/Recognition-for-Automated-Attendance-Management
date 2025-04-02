@@ -10,12 +10,19 @@ class Register:
     def __init__(self, root, main_ui):
         # Kết nối SQL bằng mysql-connector-python
         DB_CONFIG = {
-            'host': '192.168.1.6',  # IP của máy bạn
+            'host': 'localhost',
             'user': 'felix',
             'password': '5812',
             'database': 'NCKH',
             'collation': 'utf8mb4_general_ci'
         }
+        try:
+            conn = mysql.connector.connect(**DB_CONFIG)
+            print("Kết nối thành công!")
+            conn.close()
+        except Exception as e:
+            print(f"Lỗi: {e}")
+
         self.conn = mysql.connector.connect(**DB_CONFIG)
         self.cursor = self.conn.cursor()
 
@@ -123,16 +130,16 @@ class Register:
                 if face_crop is not None:
                     filename = f"face_{estimator.index}.png"
                     # Tạo folder chứa ảnh, name folder là ID
-                    path = ID
+                    path = ID # index
                     root = "Dataset"
-                    root_dir = os.path.join(root, path)
+                    root_dir = os.path.join(root, path)  # Dataset + '/' + ID
                     try:
                         if not os.path.exists(root):
                             os.mkdir(root)
                         os.mkdir(root_dir)
                     except FileExistsError:
                         pass
-                    path_file = os.path.join(root_dir, filename)
+                    path_file = os.path.join(root_dir, filename) # Dataset/ID/face_index.png
                     cv2.imwrite(path_file, face_crop)
                     print(f"Ảnh được lưu: {path_file}")
                     estimator.index += 1  # Tăng số thứ tự file ảnh
@@ -163,3 +170,4 @@ class Register:
     def on_close(self):
         """Handle the window close event."""
         self.main_ui.deiconify()  # Hiện lại Main_UI khi Registe
+
