@@ -49,12 +49,10 @@ class TakeImage:
         if ret:    
             # Process the frame using FacePose
             processed_frame = self.FaceDetection.detectFace(frame)
-            processed_frame = processed_frame[0]
-            if processed_frame is None:
-                # If no face is detected, use the original frame
-                processed_frame = frame
-            # Convert the frame to RGB (OpenCV uses BGR by default)
-            frame_rgb = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            if len(processed_frame) > 0:
+                processed_frame = processed_frame[0]
+                frame_rgb = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
             # Convert the frame to a PIL Image
             img = Image.fromarray(frame_rgb)
             # Convert the PIL Image to an ImageTk object

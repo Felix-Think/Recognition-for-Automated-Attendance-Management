@@ -33,7 +33,6 @@ class FaceDetection:
                 # Crop the face from the frame
                 face_crop = frame[y1:y2, x1:x2]
                 faces.append(face_crop)
-                # Save the cropped face if 't' is pressed
         return faces
 
     def run(self):

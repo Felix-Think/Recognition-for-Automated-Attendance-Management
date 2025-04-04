@@ -1,7 +1,7 @@
 import tkinter as tk
 import cv2
 from PIL import Image, ImageTk
-import UI.attendance_system.FacePose as FP
+import UI.attendance_system.PoseDetection as FP
 
 class Register:
     def __init__(self, root, main_ui):
