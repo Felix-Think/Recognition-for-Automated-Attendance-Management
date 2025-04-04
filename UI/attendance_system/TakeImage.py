@@ -2,10 +2,12 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import cv2
-import FacePose as FP
+import PoseDetection as FP
+import FaceDetection as FD
 class TakeImage:
     def __init__(self, root):
         self.FacePose = FP.FaceEstimator(camera_index=0)
+        self.FaceDetection = FD.FaceDetection(camera_index=0)
         self.root = tk.Toplevel(root)  # Create a new window
         self.root.title("Take Register")
         self.root.geometry("1200x700")
@@ -46,11 +48,11 @@ class TakeImage:
         frame = cv2.flip(frame, 1)
         if ret:    
             # Process the frame using FacePose
-            processed_frame = self.FacePose.recognization(frame)
+            processed_frame = self.FaceDetection.detectFace(frame)
+            processed_frame = processed_frame[0]
             if processed_frame is None:
                 # If no face is detected, use the original frame
                 processed_frame = frame
-
             # Convert the frame to RGB (OpenCV uses BGR by default)
             frame_rgb = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
             # Convert the frame to a PIL Image
@@ -71,7 +73,7 @@ class TakeImage:
     def take_image(self):
         """Capture and save an image."""
         ret, frame = self.cap.read()
-        frame = self.FacePose.recognization(frame)
+        frame = self.FacePose.detectFace(frame)
         if ret:
             self.FacePose.index += 1
             cv2.imwrite(f"face_{self.FacePose.index}.jpg", frame)
