@@ -11,8 +11,8 @@ class Register:
         # Kết nối SQL bằng mysql-connector-python
         DB_CONFIG = {
             'host': 'localhost',  # IP của máy bạn
-            'user': 'root',
-            'password': '',
+            'user': 'felix',
+            'password': '5812',
             'database': 'NCKH',
             'collation': 'utf8mb4_general_ci'
         }
@@ -106,46 +106,11 @@ class Register:
             print(f"Lỗi: {e}")
 
         self.open_TakeImage()
-        # estimator = FP.FaceEstimator(camera_index=0)
-            
-        # while True:
-        #     ret, frame = estimator.cap.read()
-        #     if not ret:
-        #         break
-            
-        #     face_crop = estimator.recognization(frame)  # Nhận diện khuôn mặt
-        #     if face_crop is not None:
-        #         cv2.imshow("Face Crop", face_crop)  # Hiển thị khuôn mặt crop nếu có
-
-        #     cv2.imshow("Camera", frame)  # Hiển thị camera
-            
-        #     key = cv2.waitKey(1) & 0xFF
-        #     if key == ord('t'):  # Nhấn 't' để chụp ảnh
-        #         if face_crop is not None:
-        #             filename = f"face_{estimator.index}.png"
-        #             # Tạo folder chứa ảnh, name folder là ID
-        #             path = ID
-        #             root = "Dataset"
-        #             root_dir = os.path.join(root, path)
-        #             try:
-        #                 if not os.path.exists(root):
-        #                     os.mkdir(root)
-        #                 os.mkdir(root_dir)
-        #             except FileExistsError:
-        #                 pass
-        #             path_file = os.path.join(root_dir, filename)
-        #             cv2.imwrite(path_file, face_crop)
-        #             print(f"Ảnh được lưu: {path_file}")
-        #             estimator.index += 1  # Tăng số thứ tự file ảnh
-
-        #     elif key == ord('q'):  # Nhấn 'q' để thoát
-        #         break
-        # estimator.release()
-        # self.get_img()
+        self.get_img()
     
     def get_img(self):
         img_id = self.entry_id.get()
-        img_path = f"Dataset/{img_id}"
+        img_path = os.path.join('Dataset', img_id)
         try:
             files = sorted(os.listdir(img_path))
             if not files:
@@ -164,6 +129,9 @@ class Register:
         self.root.withdraw()
         TakeImage(self.root)
 
+
+
     def on_close(self):
         """Handle the window close event."""
         self.main_ui.deiconify()  # Hiện lại Main_UI khi Registe
+

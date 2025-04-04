@@ -29,8 +29,7 @@ class TakeImage:
         self.label_roll.place(x=750, y=200)
 
         # Buttons
-        self.btn_take_image = tk.Button(self.root, text="Take Image", bg="#3498DB", fg="white", font=("Arial", 12, "bold"),
-                                        width=15, height=2, command=self.take_image)
+        self.btn_take_image = tk.Button(self.root, text="Take Image", bg="#3498DB", fg="white", font=("Arial", 12, "bold"), width=15, height=2, command=self.take_image)
         self.btn_take_image.place(x=750, y=300)
 
         # Start Video Capture
