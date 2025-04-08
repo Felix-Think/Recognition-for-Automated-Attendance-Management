@@ -20,8 +20,6 @@ class FaceDetection:
         :param frame: Input frame from the video stream.
         :return: Processed frame with bounding boxes.
         """
-        frame = cv2.flip(frame,1)  # Flip the frame horizontally for a mirrored view
-        h, w, _ = frame.shape   
         results = self.model(frame)  # Detect objects in the frame
         faces = []  # List to store cropped faces
         for result in results:

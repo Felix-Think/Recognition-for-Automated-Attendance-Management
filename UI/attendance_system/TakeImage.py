@@ -4,15 +4,20 @@ from PIL import Image, ImageTk
 import cv2
 import PoseDetection as FP
 import FaceDetection as FD
+import os 
+import numpy as np
 class TakeImage:
-    def __init__(self, root):
-        self.FacePose = FP.FaceEstimator(camera_index=0)
+    def __init__(self, root,ID):
+        self.FacePose = FP.PoseDetection()
         self.FaceDetection = FD.FaceDetection(camera_index=0)
+        self.preroot = root
         self.root = tk.Toplevel(root)  # Create a new window
         self.root.title("Take Register")
         self.root.geometry("1200x700")
         self.root.configure(bg="#2C3E50")
-
+        self.ID = ID
+        self.face = None
+        self.face_variation = 0
         # Video Frame
         self.video_frame = tk.Frame(self.root, bg="#2C3E50")
         self.video_frame.place(x=50, y=50, width=640, height=480)
@@ -34,9 +39,12 @@ class TakeImage:
         self.btn_take_image = tk.Button(self.root, text="Take Image", bg="#3498DB", fg="white", font=("Arial", 12, "bold"),
                                         width=15, height=2, command=self.take_image)
         self.btn_take_image.place(x=750, y=300)
+        self.btn_back = tk.Button(self.root, text="Back", bg="#3498DB", fg="white", font=("Arial", 12, "bold"),
+                                 width=15, height=2, command=self.on_close)
+        self.btn_back.place(x=750, y=400)
 
         # Start Video Capture
-        self.cap = self.FacePose.cap
+        self.cap = self.FaceDetection.cap
         self.update_video_frame()
 
         # Handle window close
@@ -47,12 +55,15 @@ class TakeImage:
         ret, frame = self.cap.read()
         frame = cv2.flip(frame, 1)
         if ret:    
-            # Process the frame using FacePose
+            # Process the frame using FaceDetection
             processed_frame = self.FaceDetection.detectFace(frame)
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             if len(processed_frame) > 0:
                 processed_frame = processed_frame[0]
-                frame_rgb = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
+                face_rgb = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
+                self.face = face_rgb
+            else:
+                self.face = frame_rgb
             # Convert the frame to a PIL Image
             img = Image.fromarray(frame_rgb)
             # Convert the PIL Image to an ImageTk object
@@ -60,22 +71,87 @@ class TakeImage:
             # Update the video label with the new frame
             self.video_label.imgtk = imgtk
             self.video_label.configure(image=imgtk)
-            pitch, yaw, roll = self.FacePose.DetectPose(frame)
+            pitch, yaw, roll = self.FacePose.DetectPose(self.face)
             if pitch is not None:
                 self.label_pitch.config(text=f"Pitch: {pitch:.2f}")
                 self.label_yaw.config(text=f"Yaw: {yaw:.2f}")
                 self.label_roll.config(text=f"Roll: {roll:.2f}")
+            # if self.face_variation ==0:
+            #     if np.abs(pitch) <= 4 and np.abs(yaw) <= 4 and np.abs(roll) <= 4:
+            #         self.face_variation+=1
+            #         self.take_image()
+            # elif self.face_variation == 1:
+            #     if (pitch>=3 and pitch <=7) and np.abs(yaw) <= 4 and np.abs(roll) <= 4:
+            #         self.face_variation+=1
+            #         self.take_image()
+            # elif self.face_variation == 2:
+            #     if (pitch>=8 and pitch <=12) and np.abs(yaw) <= 4 and np.abs(roll) <= 4:
+            #         self.face_variation+=1
+            #         self.take_image()
+            # elif self.face_variation == 3:  
+            #     if (pitch<=-3 and pitch >=-7) and np.abs(yaw) <= 4 and np.abs(roll) <= 4:
+            #         self.face_variation+=1
+            #         self.take_image()
+            # elif self.face_variation == 4:  
+            #     if (pitch<=-8 and pitch >=-12) and np.abs(yaw) <= 4 and np.abs(roll) <= 4:
+            #         self.face_variation+=1
+            #         self.take_image()   
+            # elif self.face_variation == 5: 
+            #     if abs(pitch)<=4 and (yaw>=3 and yaw <=7)and np.abs(roll) <= 4:
+            #         self.face_variation+=1
+            #         self.take_image() 
+            # elif self.face_variation == 6: 
+            #     if abs(pitch)<=4 and (yaw>=8 and yaw <=12)and np.abs(roll) <= 4:
+            #         self.face_variation+=1
+            #         self.take_image()
+            # elif self.face_variation == 7: 
+            #     if abs(pitch)<=4 and (yaw<=-3 and yaw >=-7)and np.abs(roll) <= 4:
+            #         self.face_variation+=1
+            #         self.take_image()
+            # elif self.face_variation == 8: 
+            #     if abs(pitch)<=4 and (yaw<=-8 and yaw >=-12)and np.abs(roll) <= 4:
+            #         self.face_variation+=1
+            #         self.take_image()
+            # elif self.face_variation == 9: 
+            #     if abs(pitch)<=4 and np.abs(yaw) <= 4 and (roll>=3 and roll <=7):
+            #         self.face_variation+=1
+            #         self.take_image()
+            # elif self.face_variation == 10: 
+            #     if abs(pitch)<=4 and np.abs(yaw) <= 4 and (roll>=8 and roll <=12):
+            #         self.face_variation+=1
+            #         self.take_image()
+            # elif self.face_variation == 11: 
+            #     if abs(pitch)<=4 and np.abs(yaw) <= 4 and (roll<=-3 and roll >=-7):
+            #         self.face_variation+=1
+            #         self.take_image()
+            # elif self.face_variation == 11: 
+            #     if abs(pitch)<=4 and np.abs(yaw) <= 4 and (roll<=-8 and roll >=-12):
+            #         self.face_variation+=1
+            #         self.take_image()
         # Schedule the next frame update
         self.root.after(10, self.update_video_frame)
 
     def take_image(self):
         """Capture and save an image."""
-        ret, frame = self.cap.read()
-        frame = self.FacePose.detectFace(frame)
-        if ret:
-            self.FacePose.index += 1
-            cv2.imwrite(f"face_{self.FacePose.index}.jpg", frame)
-            messagebox.showinfo("Success", "Image captured successfully!")
+        face_crop = self.face
+        face_crop = cv2.cvtColor(face_crop, cv2.COLOR_RGB2BGR)  # Convert back to BGR for saving
+        if face_crop is not None:
+            filename = f"face_{self.FaceDetection.index}.png"
+            # Tạo folder chứa ảnh, name folder là ID
+            path = self.ID
+            root = "Dataset"
+            root_dir = os.path.join(root, path)
+            try:
+                if not os.path.exists(root):
+                    os.mkdir(root)
+                os.mkdir(root_dir)
+            except FileExistsError:
+                pass
+            path_file = os.path.join(root_dir, filename)
+            cv2.imwrite(path_file, face_crop)
+            print(f"Ảnh được lưu: {path_file}")
+            self.FaceDetection.index += 1  # Tăng số thứ tự file ảnh
+
         else:
             messagebox.showerror("Error", "Failed to capture image.")
 
@@ -83,3 +159,4 @@ class TakeImage:
         """Handle the window close event."""
         self.cap.release()
         self.root.destroy()
+        self.preroot.deiconify()

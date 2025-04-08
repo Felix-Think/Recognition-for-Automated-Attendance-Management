@@ -3,15 +3,13 @@ import mediapipe as mp
 import numpy as np
 from scipy.spatial.transform import Rotation as Rot
 
-class FaceEstimator:
-    def __init__(self, camera_index=0, max_num_faces=1, 
+class PoseDetection:
+    def __init__(self, max_num_faces=1, 
                  detection_confidence=0.5, tracking_confidence=0.5):
         """
         Khởi tạo Estimator:
-          - Mở camera (mặc định: camera_index=0)
           - Khởi tạo MediaPipe Face Mesh với các thông số đã cho.
         """
-        self.cap = cv2.VideoCapture(camera_index)
         self.face_mesh = mp.solutions.face_mesh.FaceMesh(
             static_image_mode=False,
             max_num_faces=max_num_faces,
@@ -19,7 +17,6 @@ class FaceEstimator:
             min_detection_confidence=detection_confidence,
             min_tracking_confidence=tracking_confidence
         )
-        self.index = 0  # Dùng để đánh số file ảnh khi chụp
 
     @staticmethod
     def rotationMatrixToEulerAngles(rotation_matrix):
@@ -41,8 +38,6 @@ class FaceEstimator:
         :param frame: Input frame (BGR) from OpenCV.
         :return: Tuple (pitch, yaw, roll) in degrees, or (0, 0, 0) if no face is detected.
         """
-        # Flip the frame horizontally for a mirrored view
-        frame = cv2.flip(frame, 1)
         h, w, _ = frame.shape
 
         # Convert the frame to RGB for MediaPipe processing
@@ -50,7 +45,7 @@ class FaceEstimator:
         results = self.face_mesh.process(rgb_frame)
 
         if not results.multi_face_landmarks:
-            return 0, 0, 0  # No face detected
+            return -200, -200, -200  # No face detected
 
         # Process the first detected face
         face_landmarks = results.multi_face_landmarks[0]
@@ -66,7 +61,7 @@ class FaceEstimator:
                 (face_landmarks.landmark[291].x * w, face_landmarks.landmark[291].y * h)   # Right mouth corner
             ], dtype="double")
         except IndexError:
-            return 0, 0, 0  # Handle cases where landmarks are not fully detected
+            return -200, -200, -200  # Handle cases where landmarks are not fully detected
 
         # Define 3D model points for the face
         model_points = np.array([
@@ -111,6 +106,6 @@ class FaceEstimator:
 
         # Ensure angles are valid
         if pitch is None or yaw is None or roll is None:
-            return 0, 0, 0
+            return -200, -200, -200
 
         return pitch, yaw, roll

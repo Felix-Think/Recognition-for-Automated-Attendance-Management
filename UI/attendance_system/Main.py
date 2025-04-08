@@ -6,4 +6,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = Main_UI(root)
     root.mainloop() 
-    
