@@ -1,0 +1,182 @@
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\NCKH.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\NCKH.pdb
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\csc.exe
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\csc.exe.config
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\csc.rsp
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\csi.exe
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\csi.exe.config
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\csi.rsp
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\Microsoft.Managed.Core.targets
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\Microsoft.Win32.Primitives.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.AppContext.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Console.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Diagnostics.DiagnosticSource.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Diagnostics.StackTrace.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Globalization.Calendars.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.IO.Compression.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.IO.Compression.ZipFile.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.IO.FileSystem.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.IO.FileSystem.Primitives.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Net.Http.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Net.Sockets.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Security.Cryptography.Encoding.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Security.Cryptography.Primitives.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Text.Encoding.CodePages.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Threading.Tasks.Extensions.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.ValueTuple.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Xml.ReaderWriter.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Xml.XmlDocument.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Xml.XPath.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\System.Xml.XPath.XDocument.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\vbc.exe
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\vbc.exe.config
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\vbc.rsp
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\VBCSCompiler.exe
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\obj\Debug\NCKH.csproj.AssemblyReference.cache
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\obj\Debug\NCKH.csproj.CoreCompileInputs.cache
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\obj\Debug\NCKH.csproj.Up2Date
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\obj\Debug\NCKH.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\obj\Debug\NCKH.pdb
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\NCKH.dll.config
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\BouncyCastle.Cryptography.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\Google.Protobuf.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\K4os.Compression.LZ4.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\K4os.Compression.LZ4.Streams.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\K4os.Hash.xxHash.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\MySql.Data.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Buffers.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Configuration.ConfigurationManager.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Diagnostics.DiagnosticSource.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.IO.Pipelines.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Memory.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Numerics.Vectors.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Threading.Tasks.Extensions.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\ZstdSharp.dll
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\BouncyCastle.Cryptography.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\Google.Protobuf.pdb
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\Google.Protobuf.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\K4os.Compression.LZ4.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\K4os.Compression.LZ4.Streams.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\K4os.Hash.xxHash.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\MySql.Data.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Buffers.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Configuration.ConfigurationManager.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Diagnostics.DiagnosticSource.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.IO.Pipelines.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Memory.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Numerics.Vectors.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Admin\OneDrive\Tài liệu\DTU learning\web\NCKH\NCKH\bin\System.Threading.Tasks.Extensions.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\NCKH.dll.config
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\NCKH.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\NCKH.pdb
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\csc.exe
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\csc.exe.config
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\csc.rsp
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\csi.exe
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\csi.exe.config
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\csi.rsp
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\Microsoft.Managed.Core.targets
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\Microsoft.Win32.Primitives.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.AppContext.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Collections.Immutable.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Console.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Diagnostics.DiagnosticSource.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Globalization.Calendars.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.IO.Compression.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.IO.Compression.ZipFile.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.IO.FileSystem.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Net.Http.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Net.Sockets.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Reflection.Metadata.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Runtime.InteropServices.RuntimeInformation.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Security.Cryptography.Encoding.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Security.Cryptography.Primitives.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Text.Encoding.CodePages.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Threading.Tasks.Extensions.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.ValueTuple.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Xml.ReaderWriter.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Xml.XmlDocument.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Xml.XPath.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\System.Xml.XPath.XDocument.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\vbc.exe
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\vbc.exe.config
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\vbc.rsp
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\VBCSCompiler.exe
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\roslyn\VBCSCompiler.exe.config
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\BouncyCastle.Cryptography.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\Google.Protobuf.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\K4os.Compression.LZ4.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\K4os.Compression.LZ4.Streams.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\K4os.Hash.xxHash.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\Microsoft.Bcl.AsyncInterfaces.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\MySql.Data.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Buffers.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Configuration.ConfigurationManager.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Diagnostics.DiagnosticSource.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.IO.Pipelines.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Memory.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Numerics.Vectors.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Runtime.CompilerServices.Unsafe.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Threading.Tasks.Extensions.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\ZstdSharp.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\BouncyCastle.Cryptography.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\Google.Protobuf.pdb
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\Google.Protobuf.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\K4os.Compression.LZ4.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\K4os.Compression.LZ4.Streams.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\K4os.Hash.xxHash.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\Microsoft.Bcl.AsyncInterfaces.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\MySql.Data.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Buffers.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Configuration.ConfigurationManager.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Diagnostics.DiagnosticSource.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.IO.Pipelines.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Memory.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Numerics.Vectors.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Runtime.CompilerServices.Unsafe.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\System.Threading.Tasks.Extensions.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\obj\Debug\NCKH.csproj.AssemblyReference.cache
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\obj\Debug\NCKH.csproj.CoreCompileInputs.cache
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\obj\Debug\NCKH.csproj.Up2Date
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\obj\Debug\NCKH.dll
+D:\Project\Recognition-for-Automated-Attendance-Management\NCKH_WebCuaLong\NCKH\obj\Debug\NCKH.pdb

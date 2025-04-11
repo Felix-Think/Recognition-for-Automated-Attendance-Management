@@ -1,0 +1,138 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|d:\\project\\recognition-for-automated-attendance-management\\nckh_webcualong\\nckh\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|d:\\project\\recognition-for-automated-attendance-management\\nckh_webcualong\\nckh\\menu.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\menu.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\nckh\\adminmenu.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\adminmenu.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\nckh\\css\\styleuser.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\css\\styleuser.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{e8b06f52-6d01-11d2-aa7d-00c04f990343}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Web.config",
+              "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\Web.config",
+              "RelativeDocumentMoniker": "NCKH\\Web.config",
+              "ToolTip": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\Web.config",
+              "RelativeToolTip": "NCKH\\Web.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2025-04-11T12:08:47.13Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AdminMenu.aspx",
+              "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\AdminMenu.aspx",
+              "RelativeDocumentMoniker": "NCKH\\AdminMenu.aspx",
+              "ToolTip": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\AdminMenu.aspx",
+              "RelativeToolTip": "NCKH\\AdminMenu.aspx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
+              "WhenOpened": "2025-04-07T13:11:03.226Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Menu.aspx",
+              "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\Menu.aspx",
+              "RelativeDocumentMoniker": "NCKH\\Menu.aspx",
+              "ToolTip": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\Menu.aspx",
+              "RelativeToolTip": "NCKH\\Menu.aspx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
+              "WhenOpened": "2025-04-07T12:05:19.034Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "StyleUser.css",
+              "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\CSS\\StyleUser.css",
+              "RelativeDocumentMoniker": "NCKH\\CSS\\StyleUser.css",
+              "ToolTip": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\CSS\\StyleUser.css",
+              "RelativeToolTip": "NCKH\\CSS\\StyleUser.css",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAiwFIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-04-07T12:31:37.318Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 430,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{007a3a6b-b5b2-454d-a2bd-cf929f989be2}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

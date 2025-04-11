@@ -1,0 +1,105 @@
+﻿/* Reset mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Định dạng chung */
+body {
+    background-color: #f9fafb;
+    font-family: 'Segoe UI', sans-serif;
+    color: #111827;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+
+/* Container chính */
+.card {
+    background-color: white;
+    color: #111; /* chữ đen */
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    width: 100%;
+}
+
+
+/* Tiêu đề */
+h1 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 25px;
+}
+
+/* Header */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+    .card-header h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #222;
+    }
+
+/* Badge trạng thái */
+.badge {
+    background-color: #28a745;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 999px;
+    text-transform: capitalize;
+}
+
+    .badge.inactive {
+        background-color: #dc3545;
+    }
+
+/* Thông tin người dùng */
+.card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.info-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111;
+}
+
+/* Footer */
+.card-footer {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #444;
+    display: flex;
+    justify-content: space-between;
+}

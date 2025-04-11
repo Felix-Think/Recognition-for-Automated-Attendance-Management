@@ -1,0 +1,31 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="NCKH.Site1" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="\CSS\Style1.css">
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <h3>Login Here</h3>
+
+            <label for="txtUsername">Username</label>
+            <asp:TextBox ID="txtUsername" runat="server" placeholder="Email or Phone" CssClass="input" />
+
+            <label for="txtPassword">Password</label>
+            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" placeholder="Password" CssClass="input" />
+
+            <asp:Button ID="btnLogin" runat="server" Text="Log In" OnClick="btnLogin_Click" CssClass="button" />
+        </div>
+    </form>
+</body>
+</html>
