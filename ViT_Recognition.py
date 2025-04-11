@@ -82,7 +82,7 @@ class ViTFaceRecognition:
         self.labels.append(self.class_to_id[user_name])
         print(f"Added user: {user_name}")
         # Save updated Index and metadata
-        faiss.write_index(self.index, faiss_index_path + '.faiss')
+        faiss.write_index(self.index, faiss_index_path)
         with open(metadata_path, "wb") as f:
             pickle.dump({"labels": self.labels, "label_to_id": self.class_to_id}, f)
 
@@ -129,7 +129,7 @@ class ViTFaceRecognition:
 # Usage Example
 if __name__ == "__main__":
     vit = ViTFaceRecognition(src_dir= os.path.join('train_img'))
-    images, labels = vit.load_data(train=False, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
+    images, labels = vit.load_data(train=True, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
     #features = vit.extract_features(images)
     #vit.build_and_save_faiss_index(features, save_path='faiss_index') #if file is not exist, you have to train index for images
     # Test recognition
