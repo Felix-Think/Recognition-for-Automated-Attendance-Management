@@ -6,7 +6,7 @@ import os
 from TakeImage import TakeImage
 from PIL import Image, ImageTk
 from ViT_Recognition import ViTFaceRecognition
-
+from tkinter import messagebox
 class Register:
     def __init__(self, root, main_ui):
         # Kết nối SQL bằng mysql-connector-python
@@ -70,7 +70,7 @@ class Register:
         
         # TRAIN IMAGE
         self.train_image = tk.Button(self.root, text="CONFIRM", fg="white", bg="#2C3E50", font=("Arial", 12, "bold"),
-                                     width=15, height=2, highlightbackground="#3498DB", highlightthickness=2)
+                                     width=15, height=2, highlightbackground="#3498DB", highlightthickness=2, command=self.train_new_user)
         self.train_image.place(x=850, y=450)
 
     # Back-end main Register
@@ -86,55 +86,58 @@ class Register:
 
     def take_register(self):
         ID, name, department, position, time = self.get_infor_register()
-        if not (ID and name and department and position):
-            print("Vui lòng nhập đầy đủ thông tin!")
+        if not all([ID, name, department, position]):
+            messagebox.showerror("Error", "Vui lòng nhập đầy đủ thông tin!")
             return
-        new_employee = (ID, name, department, position, time)
+        
         try:
-            # Insert data to database
-            # Gọi Stored Procedure để chèn nhân viên mới
+            new_employee = (ID, name, department, position, time)
             self.cursor.callproc("Insert_Employees", new_employee)
             self.conn.commit()
-
-            # Kiểm tra xem có chèn được không
-            self.cursor.execute("SELECT * FROM Employees WHERE employee_id = %s", (ID,))
-            result = self.cursor.fetchone() 
-            if result:
-                print("Nhân viên đã được thêm vào CSDL")
-            else:
-                print("Thêm nhân viên thất bại")
+            
+            # Tạo thư mục nếu chưa tồn tại
+            os.makedirs(os.path.join("Datasets", ID), exist_ok=True)
+            
+            # Mở TakeImage với callback
+            self.open_TakeImage(ID)
         except Exception as e:
-            print(f"Lỗi: {e}")
-
-        self.open_TakeImage(ID)
-        # Hien thi anh cuoi cung cua ID
-        self.get_img()
+            messagebox.showerror("Database Error", f"Lỗi: {e}")
+    
 
     
     def get_img(self):
         img_id = self.entry_id.get()
         img_path = os.path.join("Datasets", img_id)
+        
+        if not os.path.exists(img_path):
+            self.img_label.config(image=None, text="No Image")
+            return
+            
         try:
-            files = sorted(os.listdir(img_path))
+            files = sorted([f for f in os.listdir(img_path) if f.endswith(('.jpg', '.png'))])
             if not files:
-                print("Không có ảnh")
+                self.img_label.config(image=None, text="No Images")
                 return
+                
             latest_img = files[-1]
             img = Image.open(os.path.join(img_path, latest_img))
-            img = img.resize((300, 150))
-            img = ImageTk.PhotoImage(img)
-            # Hiển thị ảnh lên label
-            self.img_label.config(image=img)  # Hiển thị ảnh lên label
-            self.img_label.image = img  # Giữ tham chiếu tới ảnh
+            img = img.resize((300, 150), Image.LANCZOS)
+            photo_img = ImageTk.PhotoImage(img)
+            
+            self.img_label.config(image=photo_img)
+            self.img_label.image = photo_img
         except Exception as e:
-            print(f"Lỗi: {e}")
-    def open_TakeImage(self,ID):
-        self.root.withdraw()
-        TakeImage(self.root,ID)
+            print(f"Error loading image: {e}")
+            self.img_label.config(image=None, text="Load Error")
 
-    def train_new_user(self, ID):
-        label = ID
-        src_dir = os.path.join('Datasets', ID)
+    def open_TakeImage(self,ID):
+        self.root.withdraw() # Ẩn cửa sổ đăng ký
+        TakeImage(self.root,ID, callback = self.update_image_after_return) # Mở cửa sổ TakeImage
+
+
+    def train_new_user(self):
+        label = self.entry_id.get()
+        src_dir = os.path.join('Datasets', label)
         vit = ViTFaceRecognition(src_dir=src_dir)
         images, labels = vit.load_data(train=False, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
         #features = vit.extract_features(images)
@@ -143,6 +146,12 @@ class Register:
         paths_new_user = os.listdir(src_dir)
         usr_paths = [os.path.join(src_dir, path) for path in paths_new_user] # Lay duong dan de cac anh cua ID 
         vit.add_new_user(usr_paths, label, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
+        print("Đã thêm người dùng mới vào chỉ mục FAISS")
+
+    def update_image_after_return(self):
+        """Callback function để cập nhật ảnh sau khi quay lại"""
+        self.get_img()
+        self.root.deiconify()
 
     def on_close(self):
         """Handle the window close event."""
