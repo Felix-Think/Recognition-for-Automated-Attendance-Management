@@ -82,12 +82,12 @@ class ViTFaceRecognition:
         self.labels.append(self.class_to_id[user_name])
         print(f"Added user: {user_name}")
         # Save updated Index and metadata
-        faiss.write_index(self.index, faiss_index_path + '.faiss')
+        faiss.write_index(self.index, faiss_index_path)
         with open(metadata_path, "wb") as f:
             pickle.dump({"labels": self.labels, "label_to_id": self.class_to_id}, f)
 
 
-    def recognize_face(self, query_img_path, threshold=0.9):
+    def recognize_face_1(self, query_img_path, threshold=0.9):
         """Recognize face using FAISS search"""
         img = cv2.cvtColor(cv2.imread(query_img_path), cv2.COLOR_BGR2RGB)
         query_embed = self.extract_features([img])
@@ -103,22 +103,50 @@ class ViTFaceRecognition:
             return user_name, similarity
         else:
             return "Unknown", similarity
+    # recognize_face for list of images
 
+    def recognize_face_2(self, query_img_list, threshold=0.9):
+        """Recognize face using FAISS search"""
+        #
+        results = []
+        for image in query_img_list:
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            query_embed = self.extract_features([image])
+
+            D, I = self.index.search(query_embed.astype('float32'), k=1)
+            distance = D[0][0]
+            pred_id = self.labels[I[0][0]]
+            # Convert distance to cosine similarity (assuming embeddings are normalized)
+            similarity = 1 - distance / 2  
+            if similarity > threshold:
+                user_name = [k for k, v in self.class_to_id.items() if v == pred_id][0]
+                results.append((user_name, pred_id, similarity))
+            else:
+                results.append(("Unknown", pred_id, similarity))
+
+        return results
+            
 # Usage Example
 if __name__ == "__main__":
-    vit = ViTFaceRecognition(src_dir= os.path.join('Datasets', 'train_img'))
-    images, labels = vit.load_data(train=False, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
+    vit = ViTFaceRecognition(src_dir= os.path.join('train_img'))
+    images, labels = vit.load_data(train=True, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
     #features = vit.extract_features(images)
-    #vit.build_and_save_faiss_index(features, save_path='faiss_index') if file is not exist, you have to train index for images
+    #vit.build_and_save_faiss_index(features, save_path='faiss_index') #if file is not exist, you have to train index for images
     # Test recognition
-#    result, score = vit.recognize_face('Datasets/train_img/Long/cropped_face_10.jpg')
-#    print(f"Recognized: {result} (Score: {score:.2f})")
+    result, score = vit.recognize_face_1('train_img/Long/cropped_face_10.jpg')
+    print(f"Recognized: {result} (Score: {score:.2f})")
 
     # Test new User
-    usr_dir = 'Datasets/train_img/Michael_Powell'
-    paths_new_user = os.listdir(usr_dir)
-    usr_paths = [os.path.join(usr_dir, path) for path in paths_new_user]
-    vit.add_new_user(usr_paths, 'Michael_Powell', faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
+#    usr_dir = 'train_img/Michael_Powell'
+#    paths_new_user = os.listdir(usr_dir)
+#    usr_paths = [os.path.join(usr_dir, path) for path in paths_new_user]
+#    vit.add_new_user(usr_paths, 'Michael_Powell', faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
     # Test recognition after adding new user
-    result, score = vit.recognize_face('Datasets/train_img/Michael_Powell/Michael_Powell_0001.jpg')
-    print(f"Recognized: {result} (Score: {score:.2f})")
+
+#|%%--%%| <QmmjrfLpJ4|0N46Aqd1NS>
+    
+    image = cv2.imread('train_img/Michael_Powell/Michael_Powell_0002.jpg')
+    image = [image]    
+    result = vit.recognize_face_2(image)
+    print(result)
+    

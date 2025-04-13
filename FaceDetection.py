@@ -9,9 +9,6 @@ class FaceDetection:
         :param camera_index: Index of the camera to use.
         """
         self.model = YOLO(model_path)  # Load the YOLO model
-        self.cap = cv2.VideoCapture(camera_index)  # Initialize the video capture
-        if not self.cap.isOpened():
-            raise Exception("Error: Unable to access the camera.")
         self.index = 0  # Used for saving images
 
     def detectFace(self, frame):

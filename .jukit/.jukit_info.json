@@ -1,1 +1,1 @@
-{"cmd": "\ndata_preprocessed.shape\n", "outhist_cell": "NONE", "outhist_title": "BMQDp0hdjw", "is_md": 0, "cmd_opts": " --cell_id=aB8h31wHuX -s", "import_complete": 1, "terminal": "kitty"}
+{"cmd": "    \n    image = cv2.imread('train_img/Michael_Powell/Michael_Powell_0002.jpg')\n    image = [image]    \n    result = vit.recognize_face_2(image)\n    print(result)\n    ", "import_complete": 1, "terminal": "kitty", "cmd_opts": " --cell_id=0N46Aqd1NS -s", "outhist_title": "BMQDp0hdjw", "outhist_cell": "NONE", "is_md": 0}
