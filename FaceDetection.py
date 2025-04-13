@@ -27,7 +27,6 @@ class FaceDetection:
                 # Extract bounding box coordinates
                 x1, y1, x2, y2 = box.xyxy[0]
                 x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-
                 # Crop the face from the frame
                 face_crop = frame[y1:y2, x1:x2]
                 faces.append(face_crop)

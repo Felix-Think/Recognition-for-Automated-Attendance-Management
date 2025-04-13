@@ -1,53 +1,54 @@
 import tkinter as tk
-
+import cv2
+from PIL import Image, ImageTk
+import numpy as np
+import FaceDetection as FD
 class Attendance:
     def __init__(self, root):
-        self.root = root
-        self.window = tk.Toplevel()
-        self.window.title("Attendance System")
-        self.window.geometry("1280x800")
-        self.window.configure(bg="#1B2B40")
+        self.FaceDetection = FD.FaceDetection(camera_index=0)
 
-        #ID
-        self.id_entry = tk.Entry(self.window, font=("Arial", 16), fg="#3498DB", bg="#1B2B40", bd=5, relief="ridge", justify="center")
-        self.id_entry.insert(0, "ID")
-        self.id_entry.place(x=440, y=150, width=400, height=50)
+        self.root = tk.Toplevel(root)  # Create a new window
+        self.root.title("Take Register")
+        self.root.geometry("1200x700")
+        self.root.configure(bg="#2C3E50")
+        self.face = None
+        # Video Frame
+        self.video_frame = tk.Frame(self.root, bg="#2C3E50")
+        self.video_frame.place(x=0, y=0, width=1200, height=700)
+        # Keep the size of video_label fixed
+        self.video_label = tk.Label(self.video_frame, width=1200, height=700)
+        self.video_label.pack()
+        # Start Video Capture
+        self.cap = self.FaceDetection.cap
+        # Handle window close
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
+        self.update_video_frame()
+        
 
-        #Name
-        self.name_entry = tk.Entry(self.window, font=("Arial", 16), fg="#3498DB", bg="#1B2B40", bd=5, relief="ridge", justify="center")
-        self.name_entry.insert(0, "NAME")
-        self.name_entry.place(x=440, y=230, width=400, height=50)
+    def update_video_frame(self):
+        """Update the video frame in the Tkinter window."""
+        ret, frame = self.cap.read()
+        if ret:
+            # Flip the frame horizontally for a mirrored view
+            frame = cv2.flip(frame, 1)
 
-        #Notification
-        self.notification_label = tk.Label(self.window, text="Waiting for input...", font=("Arial", 20, "bold"), fg="#3498DB", bg="#2C3E50")
-        self.notification_label.place(x=340, y=350, width=600, height=80)
+            # Convert the frame to RGB (OpenCV uses BGR by default)
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)      
+            # Convert the frame to a PIL Image
+            img = Image.fromarray(frame_rgb)
+            # Convert the PIL Image to an ImageTk object
+            imgtk = ImageTk.PhotoImage(image=img)
+            # Update the video label with the new frame
+            self.video_label.imgtk = imgtk
+            self.video_label.configure(image=imgtk)
+            self.face = self.FaceDetection.detectFace(frame_rgb)
+            print(self.face[0].shape)
 
-        # Create buttons
-        self.create_buttons()
 
-    def create_buttons(self):
-        tk.Button(self.window, text='TAKE IMAGE', bg="#3498DB", fg="white", font=('Arial', 12, 'bold'), height=2, width=15, command=self.take_image).place(x=300, y=500)
-        tk.Button(self.window, text='TRAIN IMAGE', bg="#3498DB", fg="white", font=('Arial', 12, 'bold'), height=2, width=15, command=self.train_image).place(x=750, y=500)
+        # Schedule the next frame update
+        self.root.after(10, self.update_video_frame)
 
-        tk.Button(self.window, text="BACK", bg="#E74C3C", fg="white", font=('Arial', 12, 'bold'), height=2, width=15, command=self.go_back).place(x=530, y=650)
-
-    #Update notification
-    def update_notification(self, message, status="default"):
-        colors = {
-            "success": "#2ECC71",  # Xanh lá cây
-            "error": "#E74C3C",    # Đỏ
-            "default": "#3498DB"   # Xanh dương
-        }
-        self.notification_label.config(text=message, fg=colors.get(status, "#3498DB"))
-
-    def take_image(self):
-        self.update_notification("Image captured successfully!", "success")
-
-    
-    def train_image(self):
-        self.update_notification("Training completed!", "success")
-
-    #Đóng cửa sổ hiện tại và quay lại màn hình chính
-    def go_back(self):
-        self.window.destroy()
-        self.root.deiconify()
+    def on_close(self):
+        """Handle the window close event."""
+        self.cap.release()
+        self.root.destroy()
