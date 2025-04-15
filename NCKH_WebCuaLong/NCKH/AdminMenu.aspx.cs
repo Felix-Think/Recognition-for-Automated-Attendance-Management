@@ -164,9 +164,9 @@ namespace NCKH
         {
             GridViewRow row = employeesTable.Rows[e.RowIndex];
             string empID = employeesTable.DataKeys[e.RowIndex].Value.ToString();
-            string name = ((TextBox)row.FindControl("txtEditFullName")).Text.Trim(); 
-            string gender = ((TextBox)row.FindControl("txtEditGender")).Text.Trim(); 
-            string departmentID = ((TextBox)row.FindControl("txtEditDepartment")).Text.Trim(); 
+            string name = ((TextBox)row.FindControl("txtEditFullName")).Text.Trim();
+            string gender = ((DropDownList)row.FindControl("ddlEditGender")).SelectedValue;
+            string departmentID = ((DropDownList)row.FindControl("ddlEditDepartment")).SelectedValue;
             string position = ((TextBox)row.FindControl("txtEditPosition")).Text.Trim();
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -198,5 +198,33 @@ namespace NCKH
             LoadEmployees();
             ScriptManager.RegisterStartupScript(this, GetType(), "showTab", $"showTab('employees');", true);
         }
+        protected void employeesTable_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow && employeesTable.EditIndex == e.Row.RowIndex)
+            {
+                DropDownList ddlDepartment = (DropDownList)e.Row.FindControl("ddlEditDept");
+                if (ddlDepartment != null)
+                {
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        string query = "SELECT department_id, department_name FROM Department";
+                        MySqlCommand cmd = new MySqlCommand(query, conn);
+                        MySqlDataReader reader = cmd.ExecuteReader();
+
+                        ddlDepartment.DataSource = reader;
+                        ddlDepartment.DataTextField = "department_name";
+                        ddlDepartment.DataValueField = "department_id";
+                        ddlDepartment.DataBind();
+                        reader.Close();
+                    }
+
+                    // Set giá trị đã chọn (department hiện tại)
+                    string currentDeptId = DataBinder.Eval(e.Row.DataItem, "department_id").ToString();
+                    ddlDepartment.SelectedValue = currentDeptId;
+                }
+            }
+        }
+
     }
 }

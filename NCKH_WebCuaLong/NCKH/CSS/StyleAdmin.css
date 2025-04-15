@@ -111,6 +111,11 @@ h1 {
     max-width: 150px; /* Hoặc width: 150px; */
     box-sizing: border-box;
 }
+.container {
+    max-width: 1200px; /* hoặc bất kỳ chiều rộng nào bạn muốn */
+    margin: 0 auto; /* canh giữa */
+    padding: 1rem;
+}
 
 /* Badges */
 .badge {
