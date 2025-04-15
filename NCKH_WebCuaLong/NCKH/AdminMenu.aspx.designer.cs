@@ -24,6 +24,24 @@ namespace NCKH
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+        /// txtSearchEmp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSearchEmp;
+
+        /// <summary>
+        /// btnSearchEmp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSearchEmp;
+
+        /// <summary>
         /// employeesTable control.
         /// </summary>
         /// <remarks>
@@ -33,13 +51,22 @@ namespace NCKH
         protected global::System.Web.UI.WebControls.GridView employeesTable;
 
         /// <summary>
-        /// SqlDataSource1 control.
+        /// txtSearchAtd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSource1;
+        protected global::System.Web.UI.WebControls.TextBox txtSearchAtd;
+
+        /// <summary>
+        /// btnSearchAtd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSearchAtd;
 
         /// <summary>
         /// attendanceTable control.
@@ -49,6 +76,24 @@ namespace NCKH
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView attendanceTable;
+
+        /// <summary>
+        /// txtSearchDept control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSearchDept;
+
+        /// <summary>
+        /// btnSearchDept control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSearchDept;
 
         /// <summary>
         /// departmentTable control.

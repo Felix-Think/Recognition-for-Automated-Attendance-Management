@@ -1,6 +1,10 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace NCKH
 {
@@ -16,6 +20,7 @@ namespace NCKH
                 LoadEmployees();
                 LoadAttendance();
                 LoadDepartments();
+                ViewState["CurrentTab"] = "employees"; // Mặc định hiển thị Employees
             }
         }
 
@@ -25,7 +30,12 @@ namespace NCKH
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
-                string query = "SELECT e.employee_id, e.full_name, e.birthday, e.gender, e.department_id, e.position, e.hire_date, e.status, d.department_name " +"FROM Employees e, Department d " + "WHERE e.department_id = d.department_id";
+                string query = @"
+                    SELECT e.employee_id, e.full_name, e.birthday, e.gender, 
+                           e.department_id, d.department_name, e.position, 
+                           e.hire_date, e.work_status 
+                    FROM Employees e
+                    JOIN Department d ON e.department_id = d.department_id";
 
                 MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
                 DataTable dt = new DataTable();
@@ -41,7 +51,12 @@ namespace NCKH
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
-                string query = "SELECT a.attendance_id, a.employee_id, a.work_date, a.check_in_time, a.check_out_time, a.hours_worked, a.status FROM Attendance a";
+                string query = @"
+                    SELECT attendance_id, employee_id, work_date, 
+                           check_in_time, check_out_time, hours_worked, 
+                           status_atd 
+                    FROM Attendance";
+
                 MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
@@ -63,6 +78,125 @@ namespace NCKH
                 departmentTable.DataSource = dt;
                 departmentTable.DataBind();
             }
+        }
+
+        private void SearchEmployees()
+        {
+            string searchText = txtSearchEmp.Text.Trim();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM Employees WHERE Name LIKE @search";
+                MySqlDataAdapter da = new MySqlDataAdapter(query, conn);
+                da.SelectCommand.Parameters.AddWithValue("@search", "%" + searchText + "%");
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                employeesTable.DataSource = dt;
+                employeesTable.DataBind();
+            }
+        }
+
+        private void SearchAttendance()
+        {
+            string searchText = txtSearchAtd.Text.Trim();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM Attendance WHERE employee_id LIKE @search";
+                MySqlDataAdapter da = new MySqlDataAdapter(query, conn);
+                da.SelectCommand.Parameters.AddWithValue("@search", "%" + searchText + "%");
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                attendanceTable.DataSource = dt;
+                attendanceTable.DataBind();
+            }
+        }
+
+        private void SearchDepartments()
+        {
+            string searchText = txtSearchDept.Text.Trim();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM Department WHERE department_name LIKE @search";
+                MySqlDataAdapter da = new MySqlDataAdapter(query, conn);
+                da.SelectCommand.Parameters.AddWithValue("@search", "%" + searchText + "%");
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                departmentTable.DataSource = dt;
+                departmentTable.DataBind();
+            }
+        }
+        //Search button
+        protected void btnSearchEmp_Click(object sender, EventArgs e)
+        {
+            SearchEmployees();
+            ViewState["CurrentTab"] = "employees";
+            ScriptManager.RegisterStartupScript(this, GetType(), "showTab", $"showTab('employees');", true);
+        }
+
+        protected void btnSearchAtd_Click(object sender, EventArgs e)
+        {
+            SearchAttendance();
+            ViewState["CurrentTab"] = "attendance";
+            ScriptManager.RegisterStartupScript(this, GetType(), "showTab", $"showTab('attendance');", true);
+        }
+
+        protected void btnSearchDept_Click(object sender, EventArgs e)
+        {
+            SearchDepartments();
+            ViewState["CurrentTab"] = "department";
+            ScriptManager.RegisterStartupScript(this, GetType(), "showTab", $"showTab('department');", true);
+        }
+        //Edit button
+        protected void employeesTable_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            employeesTable.EditIndex = e.NewEditIndex;
+            LoadEmployees();
+            ScriptManager.RegisterStartupScript(this, GetType(), "showTab", $"showTab('employees');", true);
+        }
+
+        protected void employeesTable_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            employeesTable.EditIndex = -1;
+            LoadEmployees();
+            ScriptManager.RegisterStartupScript(this, GetType(), "showTab", $"showTab('employees');", true);
+        }
+        //updating
+        protected void employeesTable_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            GridViewRow row = employeesTable.Rows[e.RowIndex];
+            string empID = employeesTable.DataKeys[e.RowIndex].Value.ToString();
+            string name = ((TextBox)row.FindControl("txtEditFullName")).Text.Trim(); 
+            string gender = ((TextBox)row.FindControl("txtEditGender")).Text.Trim(); 
+            string departmentID = ((TextBox)row.FindControl("txtEditDepartment")).Text.Trim(); 
+            string position = ((TextBox)row.FindControl("txtEditPosition")).Text.Trim();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string query = "UPDATE Employees SET full_name = @name, gender = @gender, department_id = @department, position = @position WHERE employee_id = @id";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@gender", gender);
+                cmd.Parameters.AddWithValue("@department", departmentID);
+                cmd.Parameters.AddWithValue("@position", position);
+                cmd.Parameters.AddWithValue("@id", empID);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (MySqlException ex)
+                {
+                    Response.Write("Lỗi: " + ex.Message);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+
+            employeesTable.EditIndex = -1;
+            LoadEmployees();
+            ScriptManager.RegisterStartupScript(this, GetType(), "showTab", $"showTab('employees');", true);
         }
     }
 }

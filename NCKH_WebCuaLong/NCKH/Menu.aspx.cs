@@ -22,7 +22,7 @@ namespace NCKH
 
             if (string.IsNullOrEmpty(username))
             {
-                lblName.Text = "No username in session";
+                lblName.Text = "Không tìm thấy tài khoản.";
                 return;
             }
 
@@ -39,7 +39,7 @@ namespace NCKH
                         d.department_name,
                         e.position,
                         e.hire_date,
-                        e.status
+                        e.work_status
                     FROM Users u
                     JOIN Employees e ON u.employee_id = e.employee_id
                     LEFT JOIN Department d ON e.department_id = d.department_id
@@ -60,13 +60,21 @@ namespace NCKH
                             if (reader["birthday"] != DBNull.Value)
                             {
                                 DateTime birthday = Convert.ToDateTime(reader["birthday"]);
-                                lblBirthday.Text = birthday.ToString("MMMM dd, yyyy");
+                                lblBirthday.Text = birthday.ToString("dd/MM/yyyy");
                             }
 
-                            if (reader["gender"] != DBNull.Value)
+                            string gender = reader["gender"].ToString();
+                            switch (gender)
                             {
-                                bool gender = Convert.ToBoolean(reader["gender"]);
-                                lblGender.Text = gender ? "Male" : "Female";
+                                case "M":
+                                    lblGender.Text = "Nam";
+                                    break;
+                                case "F":
+                                    lblGender.Text = "Nữ";
+                                    break;
+                                default:
+                                    lblGender.Text = "Khác";
+                                    break;
                             }
 
                             lblDepartment.Text = reader["department_name"].ToString();
@@ -75,12 +83,16 @@ namespace NCKH
                             if (reader["hire_date"] != DBNull.Value)
                             {
                                 DateTime hireDate = Convert.ToDateTime(reader["hire_date"]);
-                                lblHireDate.Text = hireDate.ToString("MMMM dd, yyyy");
+                                lblHireDate.Text = hireDate.ToString("dd/MM/yyyy");
                             }
 
-                            string status = reader["status"].ToString();
-                            lblStatus.Text = status;
-                            statusBadge.Attributes["class"] = status.ToLower() == "active" ? "badge" : "badge inactive";
+                            bool workStatus = Convert.ToBoolean(reader["work_status"]);
+                            lblStatus.Text = workStatus ? "Đang làm" : "Đã nghỉ";
+                            statusBadge.Attributes["class"] = workStatus ? "badge active" : "badge inactive";
+                        }
+                        else
+                        {
+                            lblName.Text = "Không tìm thấy thông tin nhân viên.";
                         }
                     }
                 }

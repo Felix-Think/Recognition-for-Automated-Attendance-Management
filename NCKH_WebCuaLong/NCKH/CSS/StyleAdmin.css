@@ -107,6 +107,11 @@ h1 {
     background-color: #f9fafb;
 }
 
+.table td input[type="text"] {
+    max-width: 150px; /* Hoặc width: 150px; */
+    box-sizing: border-box;
+}
+
 /* Badges */
 .badge {
     padding: 0.25rem 0.5rem;
@@ -131,3 +136,68 @@ h1 {
         border: 1px solid #d1d5db;
         color: #374151;
     }
+/* Search button */
+.search-box {
+    padding: 6px 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-search {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-add {
+    background-color: #2196F3;
+    color: white;
+}
+
+/* edit button */
+
+.form-actions {
+    margin: 10px 0;
+    display: flex;
+    gap: 8px;
+}
+
+.form-grid {
+    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+}
+
+.input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+}
+
+    .button.success {
+        background-color: #28a745;
+    }
+
+    .button.warning {
+        background-color: #ffc107;
+    }
+
