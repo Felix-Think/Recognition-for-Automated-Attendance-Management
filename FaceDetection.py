@@ -26,9 +26,19 @@ class FaceDetection:
                 x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
                 # Crop the face from the frame
                 face_crop = frame[y1:y2, x1:x2]
+                face_crop = cv2.resize(face_crop, (224, 224))  # Resize to 224x224
                 faces.append(face_crop)
         return faces
-
+    def detectFaceBoxes(self, frame):
+        results = self.model(frame)  # Detect objects in the frame
+        boxes = []  # List to store cropped faces
+        for result in results:
+            for box in result.boxes:
+                # Extract bounding box coordinates
+                x1, y1, x2, y2 = box.xyxy[0]
+                x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+                boxes.append((x1, y1, x2, y2))
+        return boxes
     def run(self):
         """
         Start the face detection process.
