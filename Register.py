@@ -6,7 +6,11 @@ import os
 from TakeImage import TakeImage
 from PIL import Image, ImageTk
 from ViT_Recognition import ViTFaceRecognition
+<<<<<<< HEAD
 from tkinter import messagebox
+=======
+
+>>>>>>> Thinh
 class Register:
     def __init__(self, root, main_ui):
         # Kết nối SQL bằng mysql-connector-python
@@ -104,6 +108,13 @@ class Register:
             messagebox.showerror("Database Error", f"Lỗi: {e}")
     
 
+<<<<<<< HEAD
+=======
+        self.open_TakeImage(ID)
+        # Hien thi anh cuoi cung cua ID
+        self.get_img()
+
+>>>>>>> Thinh
     
     def get_img(self):
         img_id = self.entry_id.get()
@@ -152,6 +163,18 @@ class Register:
         """Callback function để cập nhật ảnh sau khi quay lại"""
         self.get_img()
         self.root.deiconify()
+
+    def train_new_user(self, ID):
+        label = ID
+        src_dir = os.path.join('Datasets', ID)
+        vit = ViTFaceRecognition(src_dir=src_dir)
+        images, labels = vit.load_data(train=False, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
+        #features = vit.extract_features(images)
+        #vit.build_and_save_faiss_index(features, save_path='faiss_index') if file is not exist, you have to train index for images
+        # add new user
+        paths_new_user = os.listdir(src_dir)
+        usr_paths = [os.path.join(src_dir, path) for path in paths_new_user] # Lay duong dan de cac anh cua ID 
+        vit.add_new_user(usr_paths, label, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
 
     def on_close(self):
         """Handle the window close event."""

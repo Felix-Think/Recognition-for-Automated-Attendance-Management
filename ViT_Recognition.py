@@ -129,7 +129,7 @@ class ViTFaceRecognition:
 # Usage Example
 if __name__ == "__main__":
     vit = ViTFaceRecognition(src_dir= os.path.join('train_img'))
-    images, labels = vit.load_data(train=True, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
+    images, labels = vit.load_data(train=False, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
     #features = vit.extract_features(images)
     #vit.build_and_save_faiss_index(features, save_path='faiss_index') #if file is not exist, you have to train index for images
     # Test recognition
@@ -150,3 +150,8 @@ if __name__ == "__main__":
     result = vit.recognize_face_2(image)
     print(result)
     
+#|%%--%%| <0N46Aqd1NS|8UMIIbHEiY>
+
+# train voi tap du lieu VGG2
+
+
