@@ -6,11 +6,9 @@ import os
 from TakeImage import TakeImage
 from PIL import Image, ImageTk
 from ViT_Recognition import ViTFaceRecognition
-<<<<<<< HEAD
 
-=======
 from tkinter import messagebox
->>>>>>> main
+
 class Register:
     def __init__(self, root, main_ui):
         # Kết nối SQL bằng mysql-connector-python
@@ -108,13 +106,6 @@ class Register:
             messagebox.showerror("Database Error", f"Lỗi: {e}")
     
 
-<<<<<<< HEAD
-        self.open_TakeImage(ID)
-        # Hien thi anh cuoi cung cua ID
-        self.get_img()
-
-=======
->>>>>>> main
     
     def get_img(self):
         img_id = self.entry_id.get()
