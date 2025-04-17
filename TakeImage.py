@@ -45,7 +45,7 @@ class TakeImage:
         self.btn_back.place(x=750, y=400)
 
         # Start Video Capture
-        self.cap = self.FaceDetection.cap
+        self.cap = cv2.VideoCapture(0)
         self.update_video_frame()
 
         # Handle window close
