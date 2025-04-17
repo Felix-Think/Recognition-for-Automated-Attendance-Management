@@ -7,7 +7,7 @@ import FaceDetection as FD
 import os 
 import numpy as np
 class TakeImage:
-    def __init__(self, root,ID):
+    def __init__(self, root,ID, callback = None):
         self.FacePose = FP.PoseDetection()
         self.FaceDetection = FD.FaceDetection(camera_index=0)
         self.preroot = root
@@ -16,6 +16,7 @@ class TakeImage:
         self.root.geometry("1200x700")
         self.root.configure(bg="#2C3E50")
         self.ID = ID
+        self.callback = callback
         self.face = None
         self.face_variation = 0
         # Video Frame
@@ -159,4 +160,7 @@ class TakeImage:
         """Handle the window close event."""
         self.cap.release()
         self.root.destroy()
+        if self.callback:
+            self.callback()
         self.preroot.deiconify()
+
