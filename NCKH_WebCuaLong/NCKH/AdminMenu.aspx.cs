@@ -3,6 +3,7 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -85,7 +86,14 @@ namespace NCKH
             string searchText = txtSearchEmp.Text.Trim();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                string query = "SELECT * FROM Employees WHERE Name LIKE @search";
+                string query = @"
+            SELECT e.employee_id, e.full_name, e.birthday, e.gender, 
+                   e.department_id, d.department_name, e.position, 
+                   e.hire_date, e.work_status 
+            FROM Employees e
+            JOIN Department d ON e.department_id = d.department_id
+            WHERE e.full_name LIKE @search";
+
                 MySqlDataAdapter da = new MySqlDataAdapter(query, conn);
                 da.SelectCommand.Parameters.AddWithValue("@search", "%" + searchText + "%");
                 DataTable dt = new DataTable();
@@ -94,6 +102,7 @@ namespace NCKH
                 employeesTable.DataBind();
             }
         }
+
 
         private void SearchAttendance()
         {
@@ -165,8 +174,13 @@ namespace NCKH
             GridViewRow row = employeesTable.Rows[e.RowIndex];
             string empID = employeesTable.DataKeys[e.RowIndex].Value.ToString();
             string name = ((TextBox)row.FindControl("txtEditFullName")).Text.Trim();
-            string gender = ((DropDownList)row.FindControl("ddlEditGender")).SelectedValue;
-            string departmentID = ((DropDownList)row.FindControl("ddlEditDepartment")).SelectedValue;
+            string genderText = ((DropDownList)row.FindControl("ddlEditGender")).SelectedValue;
+            string gender = genderText == "Nam" ? "M" :
+
+              genderText == "Nữ" ? "F" :
+
+              genderText == "Other" ? "O" : "";
+            string departmentID = ((DropDownList)row.FindControl("ddlEditDept")).SelectedValue;
             string position = ((TextBox)row.FindControl("txtEditPosition")).Text.Trim();
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -200,31 +214,85 @@ namespace NCKH
         }
         protected void employeesTable_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.RowType == DataControlRowType.DataRow && employeesTable.EditIndex == e.Row.RowIndex)
+            if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                DropDownList ddlDepartment = (DropDownList)e.Row.FindControl("ddlEditDept");
-                if (ddlDepartment != null)
+                // Gán confirm cho nút Delete (LinkButton trong CommandField)
+                foreach (Control control in e.Row.Cells[e.Row.Cells.Count - 1].Controls)
                 {
-                    using (MySqlConnection conn = new MySqlConnection(connectionString))
+                    if (control is LinkButton button && button.CommandName == "Delete")
                     {
-                        conn.Open();
-                        string query = "SELECT department_id, department_name FROM Department";
-                        MySqlCommand cmd = new MySqlCommand(query, conn);
-                        MySqlDataReader reader = cmd.ExecuteReader();
-
-                        ddlDepartment.DataSource = reader;
-                        ddlDepartment.DataTextField = "department_name";
-                        ddlDepartment.DataValueField = "department_id";
-                        ddlDepartment.DataBind();
-                        reader.Close();
+                        button.OnClientClick = "return confirm('Are you sure you want to delete this employee?');";
                     }
+                }
 
-                    // Set giá trị đã chọn (department hiện tại)
-                    string currentDeptId = DataBinder.Eval(e.Row.DataItem, "department_id").ToString();
-                    ddlDepartment.SelectedValue = currentDeptId;
+                // Nếu đang edit thì gán dữ liệu cho dropdown
+                if (employeesTable.EditIndex == e.Row.RowIndex)
+                {
+                    DropDownList ddlDepartment = (DropDownList)e.Row.FindControl("ddlEditDept");
+                    if (ddlDepartment != null)
+                    {
+                        using (MySqlConnection conn = new MySqlConnection(connectionString))
+                        {
+                            conn.Open();
+                            string query = "SELECT department_id, department_name FROM Department";
+                            MySqlCommand cmd = new MySqlCommand(query, conn);
+                            MySqlDataReader reader = cmd.ExecuteReader();
+
+                            ddlDepartment.DataSource = reader;
+                            ddlDepartment.DataTextField = "department_name";
+                            ddlDepartment.DataValueField = "department_id";
+                            ddlDepartment.DataBind();
+                            reader.Close();
+                        }
+
+                        string currentDeptId = DataBinder.Eval(e.Row.DataItem, "department_id").ToString();
+                        ddlDepartment.SelectedValue = currentDeptId;
+                    }
                 }
             }
         }
+
+
+        protected void employeesTable_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            string empID = employeesTable.DataKeys[e.RowIndex].Value.ToString();
+
+            string connectionString = "server=localhost;user id=root;password=1234;database=nckh;";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // 1. Xóa dữ liệu Attendance
+                string deleteAttendance = "DELETE FROM Attendance WHERE employee_id = @employee_id";
+                using (MySqlCommand cmd = new MySqlCommand(deleteAttendance, conn))
+                {
+                    cmd.Parameters.AddWithValue("@employee_id", empID);
+                    cmd.ExecuteNonQuery();
+                }
+
+                // 2. Xóa tài khoản Users
+                string deleteUsers = "DELETE FROM Users WHERE employee_id = @employee_id";
+                using (MySqlCommand cmd = new MySqlCommand(deleteUsers, conn))
+                {
+                    cmd.Parameters.AddWithValue("@employee_id", empID);
+                    cmd.ExecuteNonQuery();
+                }
+
+                // 3. Xóa nhân viên
+                string deleteEmployee = "DELETE FROM Employees WHERE employee_id = @employee_id";
+                using (MySqlCommand cmd = new MySqlCommand(deleteEmployee, conn))
+                {
+                    cmd.Parameters.AddWithValue("@employee_id", empID);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            LoadEmployees(); 
+            LoadAttendance();
+        }
+
+
 
     }
 }

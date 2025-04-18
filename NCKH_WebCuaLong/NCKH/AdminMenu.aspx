@@ -41,7 +41,9 @@
                         OnRowEditing="employeesTable_RowEditing"
                         OnRowUpdating="employeesTable_RowUpdating"
                         OnRowCancelingEdit="employeesTable_RowCancelingEdit"
-                        OnRowDataBound="employeesTable_RowDataBound">
+                        OnRowDataBound="employeesTable_RowDataBound"
+                        OnRowDeleting="employeesTable_RowDeleting">
+
                         <Columns>
                            <asp:BoundField DataField="employee_id" HeaderText="ID" ReadOnly="True" />
                            <asp:TemplateField HeaderText="Full Name">
@@ -52,7 +54,7 @@
                                  <asp:TextBox ID="txtEditFullName" runat="server" Text='<%# Bind("full_name") %>' CssClass="input" />
                               </EditItemTemplate>
                            </asp:TemplateField>
-                           <asp:BoundField DataField="birthday" HeaderText="Birthday" DataFormatString="{0:dd/MM/yyyy}" />
+                           <asp:BoundField DataField="birthday" HeaderText="Birthday" DataFormatString="{0:dd/MM/yyyy}" Readonly ="True"/>
                            <asp:TemplateField HeaderText="Gender">
                               <ItemTemplate>
                                  <%# Eval("gender") %>
@@ -81,7 +83,7 @@
                                  <asp:TextBox ID="txtEditPosition" runat="server" Text='<%# Bind("position") %>' CssClass="input" />
                               </EditItemTemplate>
                            </asp:TemplateField>
-                           <asp:BoundField DataField="hire_date" HeaderText="Hire Date" DataFormatString="{0:dd/MM/yyyy}" />
+                           <asp:BoundField DataField="hire_date" HeaderText="Hire Date" DataFormatString="{0:dd/MM/yyyy}" ReadOnly ="True" />
                            <asp:TemplateField HeaderText="Status">
                               <ItemTemplate>
                                  <span class='<%# Convert.ToBoolean(Eval("work_status")) ? "badge success" : "badge destructive" %>'>
@@ -89,7 +91,7 @@
                                  </span>
                               </ItemTemplate>
                            </asp:TemplateField>
-                           <asp:CommandField ShowEditButton="True" />
+                           <asp:CommandField ShowEditButton="True" ShowDeleteButton="True"/>
                         </Columns>
                      </asp:GridView>
                   </div>
@@ -155,7 +157,7 @@
              // Đọc hash URL khi tải trang
              window.onload = function () {
                  if (window.location.hash) {
-                     var tabId = window.location.hash.substring(1); // Loại bỏ '#'
+                     var tabId = window.location.hash.substring(1);
                      if (document.getElementById(tabId)) {
                          showTab(tabId);
                      }

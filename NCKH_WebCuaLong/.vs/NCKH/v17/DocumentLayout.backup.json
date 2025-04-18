@@ -19,7 +19,7 @@
       "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\dataclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|d:\\project\\recognition-for-automated-attendance-management\\nckh_webcualong\\nckh\\css\\styleadmin.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\nckh\\css\\styleadmin.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
       "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\css\\styleadmin.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
@@ -51,8 +51,7 @@
               "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-13T04:00:29.28Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Bookmark",
@@ -84,8 +83,7 @@
               "RelativeToolTip": "NCKH\\Site1.Master",
               "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2025-04-14T06:37:53.807Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-14T06:37:53.807Z"
             },
             {
               "$type": "Document",
@@ -97,8 +95,7 @@
               "RelativeToolTip": "NCKH\\CSS\\StyleAdmin.css",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAA4AAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-04-13T22:15:55.914Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-13T22:15:55.914Z"
             },
             {
               "$type": "Document",
@@ -110,8 +107,7 @@
               "RelativeToolTip": "NCKH\\DataClass.cs",
               "ViewState": "AgIAABcAAAAAAAAAAAAuwBUAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-13T22:04:27.881Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-13T22:04:27.881Z"
             },
             {
               "$type": "Document",
@@ -121,7 +117,7 @@
               "RelativeDocumentMoniker": "NCKH\\AdminMenu.aspx.cs",
               "ToolTip": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\AdminMenu.aspx.cs",
               "RelativeToolTip": "NCKH\\AdminMenu.aspx.cs",
-              "ViewState": "AgIAALwAAAAAAAAAAAAQwOMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAANEAAAAAAAAAAAAAwP0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-15T13:09:36.103Z",
               "EditorCaption": ""
