@@ -1,0 +1,1 @@
+{"cmd": "# Test recognition after adding new user\nresult = vit.recognize_face(cv2.imread('Datasets/D001/face_1.png'), top_k=3)\nprint(f\"Recognized: {result[0][0]} (Score: {result[0][1]:.2f})\")", "outhist_cell": "NONE", "outhist_title": "BMQDp0hdjw", "is_md": 0, "cmd_opts": " --cell_id=b4iawZogYP -s", "import_complete": 1, "terminal": "kitty"}
