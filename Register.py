@@ -1,133 +1,158 @@
-import tkinter as tk 
-import mysql.connector  # Thay pymysql bằng mysql-connector-python
+import tkinter as tk
+import mysql.connector
 import time
 import cv2
 import os
 from TakeImage import TakeImage
 from PIL import Image, ImageTk
 from ViT_Recognition import ViTFaceRecognition
-<<<<<<< HEAD
 from tkinter import messagebox
-=======
+from functools import partial
 
->>>>>>> Thinh
 class Register:
     def __init__(self, root, main_ui):
-        # Kết nối SQL bằng mysql-connector-python
+        self.root = tk.Toplevel(root)
+        self.main_ui = main_ui
+        self.vit = None  # Thêm biến vit ở mức class
+        self.setup_db_connection()
+        self.setup_ui()
+        self.initialize_face_recognition()
+
+    def setup_db_connection(self):
+        """Khởi tạo kết nối database"""
         DB_CONFIG = {
-            'host': 'localhost',  # IP của máy bạn
+            'host': 'localhost',
             'user': 'felix',
             'password': '5812',
             'database': 'NCKH',
             'collation': 'utf8mb4_general_ci'
         }
-        self.conn = mysql.connector.connect(**DB_CONFIG)
-        self.cursor = self.conn.cursor()
+        try:
+            self.conn = mysql.connector.connect(**DB_CONFIG)
+            self.cursor = self.conn.cursor()
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Kết nối database thất bại: {err}")
+            self.root.destroy()
 
-        self.root = tk.Toplevel(root)  # Mở cửa sổ mới thay vì dùng root
-        self.main_ui = main_ui  # Lưu lại cửa sổ chính để hiện lại sau này
+    def initialize_face_recognition(self):
+        """Khởi tạo model nhận diện khuôn mặt"""
+        try:
+            self.vit = ViTFaceRecognition(src_dir=None)
+            if os.path.exists('faiss_index.faiss'):
+                self.vit.load_data(
+                    faiss_index_path='faiss_index.faiss',
+                    metadata_path='faiss_index_metadata.pkl'
+                )
+        except Exception as e:
+            messagebox.showerror("Lỗi hệ thống", f"Không thể khởi tạo model nhận diện: {e}")
+
+    def setup_ui(self):
+        """Thiết lập giao diện người dùng"""
         self.root.title("Register")
         self.root.geometry("1200x700")
         self.root.configure(bg="#2C3E50")
-
-        # Khi đóng cửa sổ Register, hiện lại Main_UI
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
 
-        # Thanh tiêu đề giả lập
-        self.title_bar = tk.Label(self.root, text="REGISTER_EMPLOYEES", bg="#49B0B6", fg="white", font=("Arial", 14, "bold"))
+        # Title bar
+        self.title_bar = tk.Label(self.root, text="REGISTER_EMPLOYEES", bg="#49B0B6", 
+                                fg="white", font=("Arial", 14, "bold"))
         self.title_bar.pack(fill="x")
 
-        # Khung màu xanh dương #004AAD
-        self.img_frame = tk.Frame(self.root, bg="#2C3E50", highlightbackground="#004AAD", highlightthickness=3)
+        # Image preview frame
+        self.img_frame = tk.Frame(self.root, bg="#2C3E50", 
+                                highlightbackground="#004AAD", highlightthickness=3)
         self.img_frame.place(x=750, y=200, width=300, height=150)
-
-        self.img_label = tk.Label(self.img_frame, image=None, text="MÀU Ô\n#004AAD", bg="#2C3E50", fg="white", font=("Arial", 12, "bold"))
+        self.img_label = tk.Label(self.img_frame, image=None, text="ẢNH ĐẠI DIỆN", 
+                                bg="#2C3E50", fg="white", font=("Arial", 12, "bold"))
         self.img_label.pack(expand=True)
 
-        # ID
-        self.btn_id = tk.Label(self.root, text="ID", bg="#00E5FF", fg="black", font=("Arial", 12, "bold"), width=15, height=2)
-        self.btn_id.place(x=20, y=50)
-        self.entry_id = tk.Entry(self.root, font=("Arial", 12, "bold"), width=30)
-        self.entry_id.place(x=150, y=50)
-        # NAME
-        self.btn_name = tk.Label(self.root, text="NAME", bg="#00E5FF", fg="black", font=("Arial", 12, "bold"), width=15, height=2)
-        self.btn_name.place(x=20, y=150)
-        self.entry_name = tk.Entry(self.root, font=("Arial", 12, "bold"), width=30)
-        self.entry_name.place(x=150, y=150)
-
-        # Department 
-        self.btn_deparment = tk.Label(self.root, text="DEPARTMENT", bg="#3498DB", fg="black", font=("Arial", 12, "bold"), width=15, height=2)
-        self.btn_deparment.place(x=20, y=250)
-        self.entry_department = tk.Entry(self.root, font=("Arial", 12, "bold"), width=30)
-        self.entry_department.place(x=150, y=250)
-
-        # POSITION
-        self.btn_position = tk.Label(self.root, text="POSITION", bg="#3498DB", fg="black", font=("Arial", 12, "bold"), width=15, height=2)
-        self.btn_position.place(x=20, y=350)
-        self.entry_position = tk.Entry(self.root, font=("Arial", 12, "bold"), width=30)
-        self.entry_position.place(x=150, y=350)
-
-        # TAKE IMAGE
-        self.take_image = tk.Button(self.root, text="TAKE IMAGE", fg="white", bg="#2C3E50", font=("Arial", 12, "bold"),
-                                    width=15, height=2, highlightbackground="#00E5FF", highlightthickness=2, command=self.take_register)
-        self.take_image.place(x=650, y=450)
+        # Form fields
+        fields = [
+            ("ID", 20, 50),
+            ("NAME", 20, 150),
+            ("DEPARTMENT", 20, 250),
+            ("POSITION", 20, 350)
+        ]
         
-        # TRAIN IMAGE
-        self.train_image = tk.Button(self.root, text="CONFIRM", fg="white", bg="#2C3E50", font=("Arial", 12, "bold"),
-                                     width=15, height=2, highlightbackground="#3498DB", highlightthickness=2, command=self.train_new_user)
-        self.train_image.place(x=850, y=450)
+        for text, x, y in fields:
+            label = tk.Label(self.root, text=text, bg="#00E5FF" if text in ("ID", "NAME") else "#3498DB",
+                            fg="black", font=("Arial", 12, "bold"), width=15, height=2)
+            label.place(x=x, y=y)
+            
+            entry = tk.Entry(self.root, font=("Arial", 12, "bold"), width=30)
+            entry.place(x=150, y=y)
+            setattr(self, f"entry_{text.lower()}", entry)
 
-    # Back-end main Register
+        # Buttons
+        buttons = [
+            ("TAKE IMAGE", "#00E5FF", self.take_register, 650, 450),
+            ("CONFIRM", "#3498DB", self.train_new_user, 850, 450),
+            ("BACK", "#3498DB", self.on_close, 650, 550)
+        ]
+        
+        for text, color, command, x, y in buttons:
+            btn = tk.Button(self.root, text=text, fg="white", bg="#2C3E50", 
+                          font=("Arial", 12, "bold"), width=15, height=2,
+                          highlightbackground=color, highlightthickness=2, 
+                          command=command)
+            btn.place(x=x, y=y)
+
+    def validate_inputs(self):
+        """Kiểm tra các trường input"""
+        if not all([
+            self.entry_id.get().strip(),
+            self.entry_name.get().strip(),
+            self.entry_department.get().strip(),
+            self.entry_position.get().strip()
+        ]):
+            messagebox.showerror("Lỗi", "Vui lòng điền đầy đủ thông tin!")
+            return False
+        return True
 
     def get_infor_register(self):
-        ID = self.entry_id.get()
-        name = self.entry_name.get()
-        department = self.entry_department.get()
-        position = self.entry_position.get()
-        # Get current time   yyyy-mm-dd
-        hire_time = time.strftime('%Y-%m-%d')
-        return ID, name, department, position, hire_time
+        """Lấy thông tin từ form"""
+        return (
+            self.entry_id.get().strip(),
+            self.entry_name.get().strip(),
+            self.entry_department.get().strip(),
+            self.entry_position.get().strip(),
+            time.strftime('%Y-%m-%d')
+        )
 
     def take_register(self):
-        ID, name, department, position, time = self.get_infor_register()
-        if not all([ID, name, department, position]):
-            messagebox.showerror("Error", "Vui lòng nhập đầy đủ thông tin!")
+        """Chụp ảnh nhân viên mới"""
+        if not self.validate_inputs():
             return
-        
+            
         try:
-            new_employee = (ID, name, department, position, time)
+            new_employee = self.get_infor_register()
             self.cursor.callproc("Insert_Employees", new_employee)
             self.conn.commit()
             
-            # Tạo thư mục nếu chưa tồn tại
-            os.makedirs(os.path.join("Datasets", ID), exist_ok=True)
-            
-            # Mở TakeImage với callback
-            self.open_TakeImage(ID)
+            # Tạo thư mục lưu ảnh
+            os.makedirs(os.path.join("Datasets", new_employee[0]), exist_ok=True)
+            self.open_TakeImage(new_employee[0])
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Lỗi database: {err}")
         except Exception as e:
-            messagebox.showerror("Database Error", f"Lỗi: {e}")
-    
+            messagebox.showerror("Lỗi hệ thống", f"Có lỗi xảy ra: {e}")
 
-<<<<<<< HEAD
-=======
-        self.open_TakeImage(ID)
-        # Hien thi anh cuoi cung cua ID
-        self.get_img()
-
->>>>>>> Thinh
-    
     def get_img(self):
-        img_id = self.entry_id.get()
-        img_path = os.path.join("Datasets", img_id)
-        
-        if not os.path.exists(img_path):
-            self.img_label.config(image=None, text="No Image")
+        """Hiển thị ảnh đại diện"""
+        img_id = self.entry_id.get().strip()
+        if not img_id:
             return
             
+        img_path = os.path.join("Datasets", img_id)
+        
         try:
-            files = sorted([f for f in os.listdir(img_path) if f.endswith(('.jpg', '.png'))])
+            if not os.path.exists(img_path):
+                self.img_label.config(image=None, text="CHƯA CÓ ẢNH")
+                return
+                
+            files = sorted([f for f in os.listdir(img_path) if f.lower().endswith(('.jpg', '.png'))])
             if not files:
-                self.img_label.config(image=None, text="No Images")
+                self.img_label.config(image=None, text="KHÔNG TÌM THẤY ẢNH")
                 return
                 
             latest_img = files[-1]
@@ -139,44 +164,69 @@ class Register:
             self.img_label.image = photo_img
         except Exception as e:
             print(f"Error loading image: {e}")
-            self.img_label.config(image=None, text="Load Error")
+            self.img_label.config(image=None, text="LỖI TẢI ẢNH")
 
-    def open_TakeImage(self,ID):
-        self.root.withdraw() # Ẩn cửa sổ đăng ký
-        TakeImage(self.root,ID, callback = self.update_image_after_return) # Mở cửa sổ TakeImage
-
+    def open_TakeImage(self, emp_id):
+        """Mở cửa sổ chụp ảnh"""
+        self.root.withdraw()
+        TakeImage(
+            self.root,
+            emp_id,
+            callback=self.update_image_after_return
+        )
 
     def train_new_user(self):
-        label = self.entry_id.get()
+        """Thêm nhân viên mới vào hệ thống nhận diện"""
+        if not self.validate_inputs():
+            return
+            
+        label = self.entry_id.get().strip()
         src_dir = os.path.join('Datasets', label)
-        vit = ViTFaceRecognition(src_dir=src_dir)
-        images, labels = vit.load_data(train=False, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
-        #features = vit.extract_features(images)
-        #vit.build_and_save_faiss_index(features, save_path='faiss_index') if file is not exist, you have to train index for images
-        # add new user
-        paths_new_user = os.listdir(src_dir)
-        usr_paths = [os.path.join(src_dir, path) for path in paths_new_user] # Lay duong dan de cac anh cua ID 
-        vit.add_new_user(usr_paths, label, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
-        print("Đã thêm người dùng mới vào chỉ mục FAISS")
+        
+        try:
+            if not os.path.exists(src_dir):
+                messagebox.showerror("Lỗi", f"Không tìm thấy thư mục ảnh cho {label}")
+                return
+                
+            valid_exts = ('.png', '.jpg', '.jpeg')
+            usr_paths = [
+                os.path.join(src_dir, f) for f in os.listdir(src_dir) 
+                if f.lower().endswith(valid_exts)
+            ]
+            
+            if not usr_paths:
+                messagebox.showerror("Lỗi", f"Không có ảnh hợp lệ trong thư mục {label}")
+                return
+                
+            # Thêm vào hệ thống nhận diện
+            if not os.path.exists('faiss_index.faiss'):
+                self.vit.train(faiss_index_path='faiss_index')
+            else:
+                self.vit.add_new_user(
+                    usr_paths, 
+                    label,
+                    faiss_index_path='faiss_index.faiss',
+                    metadata_path='faiss_index_metadata.pkl'
+                )
+            
+            messagebox.showinfo("Thành công", f"Đã đăng ký thành công nhân viên {label}")
+        except Exception as e:
+            messagebox.showerror("Lỗi hệ thống", f"Có lỗi khi đăng ký: {e}")
 
     def update_image_after_return(self):
-        """Callback function để cập nhật ảnh sau khi quay lại"""
+        """Callback sau khi chụp ảnh xong"""
         self.get_img()
         self.root.deiconify()
 
-    def train_new_user(self, ID):
-        label = ID
-        src_dir = os.path.join('Datasets', ID)
-        vit = ViTFaceRecognition(src_dir=src_dir)
-        images, labels = vit.load_data(train=False, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
-        #features = vit.extract_features(images)
-        #vit.build_and_save_faiss_index(features, save_path='faiss_index') if file is not exist, you have to train index for images
-        # add new user
-        paths_new_user = os.listdir(src_dir)
-        usr_paths = [os.path.join(src_dir, path) for path in paths_new_user] # Lay duong dan de cac anh cua ID 
-        vit.add_new_user(usr_paths, label, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
-
     def on_close(self):
-        """Handle the window close event."""
-        self.main_ui.deiconify()  # Hiện lại Main_UI khi Registe
-
+        """Xử lý khi đóng cửa sổ"""
+        try:
+            if hasattr(self, 'cursor'):
+                self.cursor.close()
+            if hasattr(self, 'conn'):
+                self.conn.close()
+        except Exception as e:
+            print(f"Error closing resources: {e}")
+            
+        self.root.destroy()
+        self.main_ui.deiconify()

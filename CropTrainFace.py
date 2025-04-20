@@ -4,6 +4,7 @@ import FaceDetection as FD
 # Path to the train directory
 train_dir = 'vggface2/versions/1/train'
 FaceDetect = FD.FaceDetection()
+new_dir = 'vggface2/versions/1/train/cropped'
 # Iterate through each folder in the train directory
 for folder_name in os.listdir(train_dir):
     folder_path = os.path.join(train_dir, folder_name)
