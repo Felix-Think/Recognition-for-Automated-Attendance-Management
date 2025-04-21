@@ -23,21 +23,11 @@ END$$
 DELIMITER ;
 
 
-drop trigger trg_UpdateHoursWorked
-SHOW TRIGGERS LIKE 'Attendance';
 
 
 
-INSERT INTO Attendance (attendance_id, employee_id, work_date, check_in_time, hours_worked, status_atd)
-VALUES
-('E00318042025_2', 'E004', '2025-04-18', '2025-04-18 08:00:00', 0.0, 1);
-
-UPDATE Attendance
-SET check_out_time = NOW()
-WHERE attendance_id = 'E00318042025_2';
-
-DELETE FROM Attendance
-WHERE attendance_id = 'E00318042025_2';
 
 
-select * from attendance
+
+
+

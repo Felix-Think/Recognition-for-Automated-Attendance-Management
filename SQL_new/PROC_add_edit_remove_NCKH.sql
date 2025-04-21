@@ -1,7 +1,7 @@
 DELIMITER $$
 
 CREATE PROCEDURE sp_AddEmployee (
-    IN p_full_name nVARCHAR(100),
+    IN p_full_name VARCHAR(100),
     IN p_birthday DATE,
     IN p_gender CHAR(1),
     IN p_department_id VARCHAR(10),
@@ -36,13 +36,13 @@ END$$
 
 DELIMITER ;
 
-CALL sp_AddEmployee('Lý Hải Nam', '1998-02-14', 'M', 'D03', 'Kế toán', '2024-05-01', 1);
+
 
 DELIMITER $$
 
 CREATE PROCEDURE sp_UpdateEmployee (
     IN p_employee_id VARCHAR(20),
-    IN p_full_name nVARCHAR(100),
+    IN p_full_name VARCHAR(100),
     IN p_birthday DATE,
     IN p_gender CHAR(1),
     IN p_department_id VARCHAR(10),
@@ -98,7 +98,7 @@ DELIMITER $$
 
 CREATE PROCEDURE sp_AddDepartment (
     IN p_department_id VARCHAR(10),
-    IN p_department_name nVARCHAR(100)
+    IN p_department_name VARCHAR(100)
 )
 BEGIN
     -- Kiểm tra phòng ban đã tồn tại hay chưa
@@ -120,7 +120,7 @@ DELIMITER $$
 
 CREATE PROCEDURE sp_UpdateDepartment (
     IN p_department_id VARCHAR(10),
-    IN p_department_name nVARCHAR(100)
+    IN p_department_name VARCHAR(100)
 )
 BEGIN
     -- Kiểm tra mã phòng ban tồn tại
@@ -154,6 +154,19 @@ BEGIN
     -- Xóa phòng ban
     DELETE FROM Department
     WHERE department_id = p_department_id;
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE PROCEDURE Delete_Attendance_By_ID(
+    IN p_attendance_id VARCHAR(20)
+)
+BEGIN
+    DELETE FROM Attendance
+    WHERE attendance_id = p_attendance_id;
 END$$
 
 DELIMITER ;
