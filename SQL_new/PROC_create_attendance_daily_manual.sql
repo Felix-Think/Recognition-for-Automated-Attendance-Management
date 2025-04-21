@@ -1,7 +1,6 @@
 -- file này chưa test cái auto đâu --
 
 DELIMITER $$
-
 CREATE PROCEDURE Insert_Daily_Attendance()
 BEGIN
     INSERT INTO Attendance (attendance_id, employee_id, work_date, check_in_time, check_out_time, hours_worked, status_atd)
@@ -20,13 +19,12 @@ BEGIN
         AND a.work_date = CURDATE()
     );
 END$$
-
 DELIMITER ;
 
 
 
 
--- Bật event scheduler nếu chưa bật
+-- Bật event scheduler nếu chưa bật --Không chạy khúc dưới
 SET GLOBAL event_scheduler = ON;
 
 -- Tạo event chạy hàng ngày
