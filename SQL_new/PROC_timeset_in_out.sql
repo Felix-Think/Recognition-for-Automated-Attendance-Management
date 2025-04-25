@@ -1,6 +1,7 @@
 DELIMITER $$
 
-CREATE PROCEDURE sp_CheckInNow (
+
+Create PROCEDURE sp_CheckInNow (
     IN p_attendance_id VARCHAR(20)
 )
 BEGIN
@@ -11,13 +12,16 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'attendance_id không tồn tại!';
     END IF;
 
-    -- Cập nhật check-in là thời gian hiện tại
+    -- Cập nhật check-in là thời gian hiện tại và trạng thái là 1 (đã check in)
     UPDATE Attendance
-    SET check_in_time = NOW()
+    SET 
+        check_in_time = NOW(),
+        status_atd = 1
     WHERE attendance_id = p_attendance_id;
 END$$
 
 DELIMITER ;
+
 
 
 DELIMITER $$

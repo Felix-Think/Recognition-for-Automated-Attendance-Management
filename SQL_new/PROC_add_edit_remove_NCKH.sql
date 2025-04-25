@@ -171,11 +171,75 @@ END$$
 
 DELIMITER ;
 
+DELIMITER $$
+
+CREATE PROCEDURE sp_InsertUser (
+    IN p_employee_id VARCHAR(20),
+    IN p_user_name VARCHAR(50),
+    IN p_password VARCHAR(255),
+    IN p_role VARCHAR(10)
+)
+BEGIN
+    -- Kiểm tra tồn tại (theo cả khóa chính)
+    IF EXISTS (
+        SELECT 1 FROM Users 
+        WHERE employee_id = p_employee_id AND user_name = p_user_name
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'User đã tồn tại!';
+    ELSE
+        INSERT INTO Users (employee_id, user_name, password, role)
+        VALUES (p_employee_id, p_user_name, p_password, p_role);
+    END IF;
+END$$
+
+DELIMITER $$
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_UpdateUser (
+    IN p_employee_id VARCHAR(20),
+    IN p_user_name VARCHAR(50),
+    IN p_password VARCHAR(255),
+    IN p_role VARCHAR(10)
+)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM Users 
+        WHERE employee_id = p_employee_id AND user_name = p_user_name
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Không tìm thấy user để cập nhật!';
+    ELSE
+        UPDATE Users
+        SET password = p_password,
+            role = p_role
+        WHERE employee_id = p_employee_id AND user_name = p_user_name;
+    END IF;
+END$$
+
+DELIMITER ;
 
 
 
+DELIMITER $$
+CREATE PROCEDURE sp_DeleteUser (
+    IN p_employee_id VARCHAR(20),
+    IN p_user_name VARCHAR(50)
+)
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM Users 
+        WHERE employee_id = p_employee_id AND user_name = p_user_name
+    ) THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Không tìm thấy user để xóa!';
+    ELSE
+        DELETE FROM Users 
+        WHERE employee_id = p_employee_id AND user_name = p_user_name;
+    END IF;
+END$$
 
-	
+DELIMITER ;
 
 
 

@@ -33,6 +33,19 @@ CREATE TABLE Attendance (
     FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
 );
 
+DROP TABLE IF EXISTS Users;
+
+CREATE TABLE Users (
+    employee_id VARCHAR(20),
+    user_name VARCHAR(50),
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(10) CHECK (role IN ('admin', 'user')),
+    
+    PRIMARY KEY (employee_id, user_name),
+    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
+);
+
+
 INSERT INTO Department (department_id, department_name)
 VALUES
 ('D01', 'Phòng Nhân sự'),
@@ -77,6 +90,10 @@ VALUES
 ('E002180425', 'E002', '2025-04-18', '2025-04-18 08:00:00', '2025-04-18 17:00:00', 9.0, 0),
 ('E003180425', 'E003', '2025-04-18', '2025-04-18 08:00:00', '2025-04-18 17:00:00', 9.0, 0);
 
+INSERT INTO Users (employee_id, user_name, password, role) VALUES
+('E001', 'test', '123', 'admin'),
+('E002', 'abc', '123', 'user'),
+('E003', 'john_doe', '123', 'user');
 
 
 
