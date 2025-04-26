@@ -45,6 +45,36 @@ LOCK TABLES `attendance` WRITE;
 INSERT INTO `attendance` VALUES ('E001120425','E001','2025-04-12','2025-04-12 08:00:00','2025-04-12 17:00:00',9,_binary '\0'),('E001130425','E001','2025-04-13','2025-04-13 08:00:00','2025-04-13 17:00:00',9,_binary '\0'),('E001140425','E001','2025-04-14','2025-04-14 08:00:00','2025-04-14 17:30:00',9.5,_binary '\0'),('E001150425','E001','2025-04-15','2025-04-15 08:00:00','2025-04-15 18:00:00',10,_binary '\0'),('E001160425','E001','2025-04-16','2025-04-16 08:00:00','2025-04-16 17:00:00',9,_binary '\0'),('E001170425','E001','2025-04-17','2025-04-17 08:00:00','2025-04-17 17:00:00',9,_binary '\0'),('E001180425','E001','2025-04-18','2025-04-18 08:00:00','2025-04-18 17:00:00',9,_binary '\0'),('E002120425','E002','2025-04-12','2025-04-12 08:00:00','2025-04-12 17:00:00',9,_binary '\0'),('E002130425','E002','2025-04-13','2025-04-13 08:00:00','2025-04-13 17:00:00',9,_binary '\0'),('E002140425','E002','2025-04-14','2025-04-14 08:00:00','2025-04-14 17:00:00',9,_binary '\0'),('E002150425','E002','2025-04-15','2025-04-15 08:00:00','2025-04-15 17:00:00',9,_binary '\0'),('E002160425','E002','2025-04-16','2025-04-16 08:00:00','2025-04-16 17:00:00',9,_binary '\0'),('E002170425','E002','2025-04-17','2025-04-17 08:00:00','2025-04-17 17:00:00',9,_binary '\0'),('E002180425','E002','2025-04-18','2025-04-18 08:00:00','2025-04-18 17:00:00',9,_binary '\0'),('E003120425','E003','2025-04-12','2025-04-12 08:00:00','2025-04-12 17:00:00',9,_binary '\0'),('E003130425','E003','2025-04-13','2025-04-13 08:00:00','2025-04-13 17:00:00',9,_binary '\0'),('E003140425','E003','2025-04-14','2025-04-14 08:00:00','2025-04-14 17:00:00',9,_binary '\0'),('E003150425','E003','2025-04-15','2025-04-15 08:00:00','2025-04-15 17:00:00',9,_binary '\0'),('E003160425','E003','2025-04-16','2025-04-16 08:00:00','2025-04-16 17:00:00',9,_binary '\0'),('E003170425','E003','2025-04-17','2025-04-17 08:00:00','2025-04-17 17:00:00',9,_binary '\0'),('E003180425','E003','2025-04-18','2025-04-18 08:00:00','2025-04-18 17:00:00',9,_binary '\0');
 /*!40000 ALTER TABLE `attendance` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trg_UpdateHoursWorked` BEFORE UPDATE ON `attendance` FOR EACH ROW BEGIN
+    -- Chỉ xử lý khi check_out_time thay đổi
+    IF NEW.check_out_time IS NOT NULL AND 
+       (OLD.check_out_time IS NULL OR NEW.check_out_time <> OLD.check_out_time) THEN
+        
+        -- Nếu đang ở trong công ty (status_atd = 1)
+        IF OLD.status_atd = 1 THEN
+            -- Tính số giờ làm = checkout - checkin (theo giây, chia 3600 để ra giờ thập phân)
+            SET NEW.hours_worked = TIMESTAMPDIFF(SECOND, OLD.check_in_time, NEW.check_out_time) / 3600.0;
+
+            -- Đặt trạng thái về 0
+            SET NEW.status_atd = 0;
+        END IF;
+
+    END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `department`
@@ -102,6 +132,36 @@ LOCK TABLES `employees` WRITE;
 INSERT INTO `employees` VALUES ('E001','Nguyễn Văn A','M','1990-01-15','D01','Trưởng phòng','2015-06-01',_binary '',NULL),('E002','Trần Thị B','F','1992-05-20','D02','Kỹ sư','2018-03-10',_binary '',NULL),('E003','Lê Văn C','M','1995-09-25','D03','Kế toán viên','2020-11-05',_binary '',NULL);
 /*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trg_auto_generate_employee_id` BEFORE INSERT ON `employees` FOR EACH ROW BEGIN
+    DECLARE max_num INT DEFAULT 0;
+    DECLARE new_id VARCHAR(10);
+
+    -- Tìm số lớn nhất trong employee_id hiện tại
+    SELECT MAX(CAST(SUBSTRING(employee_id, 2) AS UNSIGNED))
+    INTO max_num
+    FROM Employees
+    WHERE employee_id REGEXP '^E[0-9]{3}$';
+
+    -- Tạo mã mới: E + 3 chữ số
+    SET new_id = CONCAT('E', LPAD(max_num + 1, 3, '0'));
+
+    -- Gán cho dòng chuẩn bị insert
+    SET NEW.employee_id = new_id;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `users`
@@ -800,4 +860,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-26 20:25:18
+-- Dump completed on 2025-04-26 20:28:02
