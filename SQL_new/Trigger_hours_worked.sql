@@ -1,4 +1,5 @@
 DELIMITER $$
+
 CREATE TRIGGER trg_UpdateHoursWorked
 BEFORE UPDATE ON Attendance
 FOR EACH ROW
@@ -15,17 +16,8 @@ BEGIN
             -- Đặt trạng thái về 0
             SET NEW.status_atd = 0;
         END IF;
+
     END IF;
 END$$
 
 DELIMITER ;
-
-
-
-
-
-
-
-
-
-
