@@ -11,8 +11,9 @@ BEGIN
         -- Nếu đang ở trong công ty (status_atd = 1)
         IF OLD.status_atd = 1 THEN
             -- Tính số giờ làm = checkout - checkin (theo giây, chia 3600 để ra giờ thập phân)
-            SET NEW.hours_worked = TIMESTAMPDIFF(SECOND, OLD.check_in_time, NEW.check_out_time) / 3600.0;
-
+            SET NEW.hours_worked = IFNULL(OLD.hours_worked, 0) + 
+                                   TIMESTAMPDIFF(SECOND, OLD.check_in_time, NEW.check_out_time) / 3600.0;
+            
             -- Đặt trạng thái về 0
             SET NEW.status_atd = 0;
         END IF;

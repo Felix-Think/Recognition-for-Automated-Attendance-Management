@@ -1,6 +1,5 @@
 drop database NCKH;
 
-
 use nckh;
 
 select * from Employees
@@ -25,11 +24,14 @@ CALL sp_UpdateDepartment('D05','Phòng CSKH')
 ------------------------------------------------------------------------------------------------------------------------------------
 INSERT INTO Attendance (attendance_id,employee_id, work_date, check_in_time, hours_worked, status_atd)
 VALUES
-('E00420042025', 'E004', '2025-04-20', '2025-04-20 08:00:00', 0.0, 1);  -- có id
+('E00425042025', 'E004', '2025-04-20', '2025-04-20 08:00:00', 0.0, 1);  -- có id
 
-UPDATE Attendance
-SET check_out_time = NOW()
-WHERE attendance_id = 'E00420042025';
+
+
+call sp_checkoutnow('E00425042025')
+call sp_checkinnow('E00425042025')
+
+
 
 DELETE FROM Attendance
 WHERE attendance_id = ''; 
@@ -49,4 +51,8 @@ WHERE ROUTINE_TYPE = 'PROCEDURE'
 LIMIT 0, 1000;  -- kiem tra tat ca ham trong db
 SHOW TRIGGERS LIKE 'Attendance';
 SHOW TRIGGERS LIKE 'Employees';
+
+SHOW VARIABLES LIKE 'collation%';
+ALTER DATABASE `NCKH` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+
 
