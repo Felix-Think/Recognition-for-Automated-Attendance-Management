@@ -42,7 +42,7 @@ CREATE TABLE `attendance` (
 
 LOCK TABLES `attendance` WRITE;
 /*!40000 ALTER TABLE `attendance` DISABLE KEYS */;
-INSERT INTO `attendance` VALUES ('E001120425','E001','2025-04-12','2025-04-12 08:00:00','2025-04-12 17:00:00',9,_binary '\0'),('E001130425','E001','2025-04-13','2025-04-13 08:00:00','2025-04-13 17:00:00',9,_binary '\0'),('E001140425','E001','2025-04-14','2025-04-14 08:00:00','2025-04-14 17:30:00',9.5,_binary '\0'),('E001150425','E001','2025-04-15','2025-04-15 08:00:00','2025-04-15 18:00:00',10,_binary '\0'),('E001160425','E001','2025-04-16','2025-04-16 08:00:00','2025-04-16 17:00:00',9,_binary '\0'),('E001170425','E001','2025-04-17','2025-04-17 08:00:00','2025-04-17 17:00:00',9,_binary '\0'),('E001180425','E001','2025-04-18','2025-04-18 08:00:00','2025-04-18 17:00:00',9,_binary '\0'),('E002120425','E002','2025-04-12','2025-04-12 08:00:00','2025-04-12 17:00:00',9,_binary '\0'),('E002130425','E002','2025-04-13','2025-04-13 08:00:00','2025-04-13 17:00:00',9,_binary '\0'),('E002140425','E002','2025-04-14','2025-04-14 08:00:00','2025-04-14 17:00:00',9,_binary '\0'),('E002150425','E002','2025-04-15','2025-04-15 08:00:00','2025-04-15 17:00:00',9,_binary '\0'),('E002160425','E002','2025-04-16','2025-04-16 08:00:00','2025-04-16 17:00:00',9,_binary '\0'),('E002170425','E002','2025-04-17','2025-04-17 08:00:00','2025-04-17 17:00:00',9,_binary '\0'),('E002180425','E002','2025-04-18','2025-04-18 08:00:00','2025-04-18 17:00:00',9,_binary '\0'),('E003120425','E003','2025-04-12','2025-04-12 08:00:00','2025-04-12 17:00:00',9,_binary '\0'),('E003130425','E003','2025-04-13','2025-04-13 08:00:00','2025-04-13 17:00:00',9,_binary '\0'),('E003140425','E003','2025-04-14','2025-04-14 08:00:00','2025-04-14 17:00:00',9,_binary '\0'),('E003150425','E003','2025-04-15','2025-04-15 08:00:00','2025-04-15 17:00:00',9,_binary '\0'),('E003160425','E003','2025-04-16','2025-04-16 08:00:00','2025-04-16 17:00:00',9,_binary '\0'),('E003170425','E003','2025-04-17','2025-04-17 08:00:00','2025-04-17 17:00:00',9,_binary '\0'),('E003180425','E003','2025-04-18','2025-04-18 08:00:00','2025-04-18 17:00:00',9,_binary '\0');
+INSERT INTO `attendance` VALUES ('E00425042025','E004','2025-04-20','2025-04-28 23:24:09','2025-04-28 23:24:12',207.393,_binary '\0');
 /*!40000 ALTER TABLE `attendance` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -62,8 +62,9 @@ DELIMITER ;;
         -- Nếu đang ở trong công ty (status_atd = 1)
         IF OLD.status_atd = 1 THEN
             -- Tính số giờ làm = checkout - checkin (theo giây, chia 3600 để ra giờ thập phân)
-            SET NEW.hours_worked = TIMESTAMPDIFF(SECOND, OLD.check_in_time, NEW.check_out_time) / 3600.0;
-
+            SET NEW.hours_worked = IFNULL(OLD.hours_worked, 0) + 
+                                   TIMESTAMPDIFF(SECOND, OLD.check_in_time, NEW.check_out_time) / 3600.0;
+            
             -- Đặt trạng thái về 0
             SET NEW.status_atd = 0;
         END IF;
@@ -129,7 +130,7 @@ CREATE TABLE `employees` (
 
 LOCK TABLES `employees` WRITE;
 /*!40000 ALTER TABLE `employees` DISABLE KEYS */;
-INSERT INTO `employees` VALUES ('E001','Nguyễn Văn A','M','1990-01-15','D01','Trưởng phòng','2015-06-01',_binary '',NULL),('E002','Trần Thị B','F','1992-05-20','D02','Kỹ sư','2018-03-10',_binary '',NULL),('E003','Lê Văn C','M','1995-09-25','D03','Kế toán viên','2020-11-05',_binary '',NULL);
+INSERT INTO `employees` VALUES ('E001','Nguyễn Văn A','M','1990-01-15','D01','Trưởng phòng','2015-06-01',_binary '',NULL),('E002','Trần Thị B','F','1992-05-20','D02','Kỹ sư','2018-03-10',_binary '',NULL),('E003','Lê Văn C','M','1995-09-25','D03','Kế toán viên','2020-11-05',_binary '',NULL),('E004','Lý Hải Nam','M','1998-02-14','D03','Kế toán','2024-05-01',_binary '',NULL);
 /*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -860,4 +861,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-26 20:28:02
+-- Dump completed on 2025-04-28 23:26:25
