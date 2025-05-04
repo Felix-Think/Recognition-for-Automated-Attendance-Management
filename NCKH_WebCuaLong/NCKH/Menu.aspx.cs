@@ -104,33 +104,38 @@ namespace NCKH
 
         private void LoadMonthlySalary(string employeeId)
         {
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            const decimal BaseHourlyWage = 100000m; 
+            const decimal SalaryCoefficient = 1.5m;     
+
+            decimal netSalary = 0m;
+            int month = DateTime.Now.Month;
+            int year = DateTime.Now.Year;
+
+            string sql = @"
+        SELECT 
+            IFNULL(SUM(a.hours_worked), 0) * @BaseWage * @Coeff 
+            AS total_salary
+        FROM attendance a
+        WHERE a.employee_id = @EmpId
+          AND MONTH(a.work_date) = @Month
+          AND YEAR(a.work_date) = @Year;
+    ";
+
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, conn))
             {
+                cmd.Parameters.AddWithValue("@EmpId", employeeId);
+                cmd.Parameters.AddWithValue("@Month", month);
+                cmd.Parameters.AddWithValue("@Year", year);
+                cmd.Parameters.AddWithValue("@BaseWage", BaseHourlyWage);
+                cmd.Parameters.AddWithValue("@Coeff", SalaryCoefficient);
+
                 conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand("Get_Employee_Monthly_Info", conn))
-                {
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    cmd.Parameters.AddWithValue("@p_thang", DateTime.Now.Month);
-                    cmd.Parameters.AddWithValue("@p_nam", DateTime.Now.Year);
-                    cmd.Parameters.AddWithValue("@p_employee_id", employeeId);
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            string info = reader["Thông tin"].ToString();
-                            string value = reader["Giá trị"].ToString();
-
-                            if (info == "Thực nhận")
-                            {
-                                lblSalary.Text = string.IsNullOrEmpty(value) ? "0 VNĐ" : value + " VNĐ";
-                                break;
-                            }
-                        }
-                    }
-                }
+                object result = cmd.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
+                    netSalary = Convert.ToDecimal(result);
             }
+            lblSalary.Text = netSalary.ToString("N0") + " VNĐ";
         }
     }
 }

@@ -126,6 +126,7 @@
     <Content Include="TinhLuong.aspx" />
     <Content Include="Web.config" />
     <Content Include="Login.aspx" />
+    <Content Include="WorkHours.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminMenu.aspx.cs">
@@ -164,6 +165,13 @@
     </Compile>
     <Compile Include="TinhLuong.aspx.designer.cs">
       <DependentUpon>TinhLuong.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WorkHours.aspx.cs">
+      <DependentUpon>WorkHours.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WorkHours.aspx.designer.cs">
+      <DependentUpon>WorkHours.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

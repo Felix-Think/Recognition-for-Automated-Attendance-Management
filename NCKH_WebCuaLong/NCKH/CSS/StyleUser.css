@@ -103,3 +103,17 @@ h1 {
     display: flex;
     justify-content: space-between;
 }
+.small-button {
+    padding: 4px 8px;
+    font-size: 0.85em;
+    margin-left: 10px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+    .small-button:hover {
+        background-color: #0056b3;
+    }

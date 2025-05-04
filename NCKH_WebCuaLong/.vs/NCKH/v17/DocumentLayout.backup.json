@@ -3,20 +3,32 @@
   "WorkspaceRootPath": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|d:\\project\\recognition-for-automated-attendance-management\\nckh_webcualong\\nckh\\menu.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\menu.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\nckh\\menu.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|d:\\project\\recognition-for-automated-attendance-management\\nckh_webcualong\\nckh\\menu.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\menu.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|d:\\project\\recognition-for-automated-attendance-management\\nckh_webcualong\\nckh\\tinhluong.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\nckh\\menu.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\menu.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\nckh\\tinhluong.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\tinhluong.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\nckh\\tinhluong.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
       "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\tinhluong.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\nckh\\css\\styleuser.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\css\\styleuser.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\nckh\\workhours.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\workhours.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|d:\\project\\recognition-for-automated-attendance-management\\nckh_webcualong\\nckh\\workhours.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|solutionrelative:nckh\\workhours.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{69E54898-73F2-4F29-8C5C-7B43AA250717}|NCKH\\NCKH.csproj|D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\nckh\\dataclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -50,22 +62,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 5,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Menu.aspx.cs",
-              "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\Menu.aspx.cs",
-              "RelativeDocumentMoniker": "NCKH\\Menu.aspx.cs",
-              "ToolTip": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\Menu.aspx.cs",
-              "RelativeToolTip": "NCKH\\Menu.aspx.cs",
-              "ViewState": "AgIAAF0AAAAAAAAAAAAowIgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-13T04:00:29.28Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -89,6 +87,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Menu.aspx.cs",
+              "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\Menu.aspx.cs",
+              "RelativeDocumentMoniker": "NCKH\\Menu.aspx.cs",
+              "ToolTip": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\Menu.aspx.cs",
+              "RelativeToolTip": "NCKH\\Menu.aspx.cs",
+              "ViewState": "AgIAAGQAAAAAAAAAAAAkwHIAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-04T04:53:35.706Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Menu.aspx",
               "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\Menu.aspx",
               "RelativeDocumentMoniker": "NCKH\\Menu.aspx",
@@ -101,13 +112,52 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "StyleUser.css",
+              "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\CSS\\StyleUser.css",
+              "RelativeDocumentMoniker": "NCKH\\CSS\\StyleUser.css",
+              "ToolTip": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\CSS\\StyleUser.css",
+              "RelativeToolTip": "NCKH\\CSS\\StyleUser.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-05-04T03:04:15.674Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "WorkHours.aspx.cs",
+              "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\WorkHours.aspx.cs",
+              "RelativeDocumentMoniker": "NCKH\\WorkHours.aspx.cs",
+              "ToolTip": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\WorkHours.aspx.cs",
+              "RelativeToolTip": "NCKH\\WorkHours.aspx.cs",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAgwG4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-04T02:59:03.173Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "WorkHours.aspx",
+              "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\WorkHours.aspx",
+              "RelativeDocumentMoniker": "NCKH\\WorkHours.aspx",
+              "ToolTip": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\WorkHours.aspx",
+              "RelativeToolTip": "NCKH\\WorkHours.aspx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
+              "WhenOpened": "2025-05-04T02:58:33.149Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
               "Title": "TinhLuong.aspx.cs",
               "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\TinhLuong.aspx.cs",
               "RelativeDocumentMoniker": "NCKH\\TinhLuong.aspx.cs",
               "ToolTip": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\TinhLuong.aspx.cs",
               "RelativeToolTip": "NCKH\\TinhLuong.aspx.cs",
-              "ViewState": "AgIAAD4AAAAAAAAAAAAowGkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADcAAAAAAAAAAAAswGMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-03T02:48:25.686Z",
               "EditorCaption": ""
@@ -122,11 +172,12 @@
               "RelativeToolTip": "NCKH\\TinhLuong.aspx",
               "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2025-05-03T02:48:01.965Z"
+              "WhenOpened": "2025-05-03T02:48:01.965Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 10,
               "Title": "Site1.Master",
               "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\Site1.Master",
               "RelativeDocumentMoniker": "NCKH\\Site1.Master",
@@ -138,7 +189,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 12,
               "Title": "StyleAdmin.css",
               "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\CSS\\StyleAdmin.css",
               "RelativeDocumentMoniker": "NCKH\\CSS\\StyleAdmin.css",
@@ -150,7 +201,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "DataClass.cs",
               "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\DataClass.cs",
               "RelativeDocumentMoniker": "NCKH\\DataClass.cs",
@@ -162,7 +213,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "AdminMenu.aspx.cs",
               "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\AdminMenu.aspx.cs",
               "RelativeDocumentMoniker": "NCKH\\AdminMenu.aspx.cs",
@@ -174,19 +225,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "AdminMenu.aspx",
               "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\AdminMenu.aspx",
               "RelativeDocumentMoniker": "NCKH\\AdminMenu.aspx",
               "ToolTip": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\AdminMenu.aspx",
               "RelativeToolTip": "NCKH\\AdminMenu.aspx",
-              "LogicalView": "7651a702-06e5-11d1-8ebd-00a0c90f26ea",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
               "WhenOpened": "2025-04-07T13:11:03.226Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 11,
               "Title": "Site1.Master.cs",
               "DocumentMoniker": "D:\\Project\\Recognition-for-Automated-Attendance-Management\\NCKH_WebCuaLong\\NCKH\\Site1.Master.cs",
               "RelativeDocumentMoniker": "NCKH\\Site1.Master.cs",

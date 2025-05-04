@@ -25,6 +25,8 @@
                     <p class="info-label">Salary this Month</p>
                     <p class="info-value">
                         <asp:Label ID="lblSalary" runat="server" Text=""></asp:Label>
+                        &nbsp;
+                        <asp:Button ID="btnViewWorkHours" runat="server" Text="📅" CssClass="icon-button" PostBackUrl="~/WorkHours.aspx" />
                     </p>
                 </div>
                 <div class="info-item">
