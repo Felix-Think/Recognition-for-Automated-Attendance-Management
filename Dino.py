@@ -38,21 +38,26 @@ class DinoFaceRecognition:
         self.class_to_id = {}
         self.id_to_class = {}
 
-        self.augmentor = A.Compose([
-    A.Resize(128, 128),
-    A.CoarseDropout(max_holes=1, max_height=32, max_width=32, p=0.5),
-    A.GaussNoise(var_limit=(10.0, 50.0), p=0.5),
-    A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=0.5),
-    A.Rotate(limit=15, p=0.5),
-    A.HorizontalFlip(p=0.5)
-])
 
-    def augment_image(self, image_list, augment_ratio=0.4):
+
+    
+
+    def augment_image(self, image_list, augment_ratio=0.5):
         augmented_images = []
         if not image_list:
-            return augmented_images
+            return []
 
         selected_indices = random.sample(range(len(image_list)), int(len(image_list) * augment_ratio))
+
+        transforms = [
+            A.Compose([A.Resize(256, 256), A.CoarseDropout(max_holes=1, max_height=32, max_width=32, p=1.0)]),
+            A.Compose([A.Resize(256, 256), A.GaussNoise(var_limit=(10.0, 50.0), p=1.0)]),
+            A.Compose([A.Resize(256, 256), A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=1.0)]),
+            A.Compose([A.Resize(256, 256), A.Rotate(limit=15, p=1.0)]),
+            A.Compose([A.Resize(256, 256), A.HorizontalFlip(p=1.0)]),
+            A.Compose([A.Resize(256, 256), A.ToGray(p=1.0)]),
+        ]
+
         for idx in selected_indices:
             image = image_list[idx]
             if isinstance(image, np.ndarray):
@@ -65,14 +70,18 @@ class DinoFaceRecognition:
                 else:
                     continue
 
-            try:
-                augmented = self.augmentor(image=image)
-                aug_img = augmented['image']
-                if aug_img is not None and aug_img.shape[-1] == 3:
-                    augmented_images.append(aug_img.astype(np.uint8))
-            except:
-                continue
-        return augmented_images
+            for aug in transforms:
+                try:
+                    augmented = aug(image=image)
+                    aug_img = augmented['image']
+                    if aug_img is not None and aug_img.shape[-1] == 3:
+                        augmented_images.append(aug_img.astype(np.uint8))
+                except:
+                    continue
+
+        # Trả về toàn bộ ảnh gốc + ảnh đã augment
+        resized_originals = [cv2.resize(img, (256, 256)) for img in image_list]
+        return resized_originals + augmented_images
 
     def load_data(self, faiss_index_path=None, metadata_path=None):
         if faiss_index_path and metadata_path:
