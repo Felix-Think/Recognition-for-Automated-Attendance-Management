@@ -7,146 +7,201 @@ from transformers import ViTImageProcessor, ViTModel
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 import pickle
+
 class ViTFaceRecognition:
     def __init__(self, src_dir='data/train_img/'):
         self.src_dir = src_dir
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         
-        # Load pretrained ViT (không dùng classification head)
-        self.processor = ViTImageProcessor.from_pretrained('google/vit-base-patch16-224')
-        self.model = ViTModel.from_pretrained('google/vit-base-patch16-224').to(self.device)
+        # Load pretrained mamba
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model = MambaVision.from_pretrained("state-spaces/mambavision-base").to(self.device)
         self.model.eval()
-        
+
         # Faiss index
         self.index = None
         self.labels = []
         self.class_to_id = {}
-        
-    def load_data(self, train = True, faiss_index_path = None, metadata_path = None):
+        self.id_to_class = {}  # Reverse mapping for faster lookup
+    
+        # ArcFace loss
+        self.arcface = ArcFaceLoss(
+                    embedding_size=512,  # Kích thước đặc trưng đầu ra
+                    num_classes=1000,    # Số lớp tối đa (có thể điều chỉnh)
+                    scale=64.0,
+                    margin=0.5
+                ).to(self.device)
+
+    def load_data(self, faiss_index_path=None, metadata_path=None):
         """Load images and labels from directory structure: src_dir/class_name/image.jpg"""
-        if train:
-            self.class_to_id = {cls: idx for idx, cls in enumerate(os.listdir(self.src_dir))}
-            self.labels = []
-            images = []
-            
-            for cls in os.listdir(self.src_dir):
-                cls_dir = os.path.join(self.src_dir, cls)
-                for img_name in tqdm(os.listdir(cls_dir), desc=f"Loading {cls}"):
-                    img_path = os.path.join(cls_dir, img_name)
-                    img = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB)
-                    images.append(img)
-                    self.labels.append(self.class_to_id[cls])
-            
-            return images, np.array(self.labels)
-        else:
-            # Load faiss index and metadata
+        if faiss_index_path and metadata_path:
             self.index = faiss.read_index(faiss_index_path)
             with open(metadata_path, 'rb') as f:
                 metadata = pickle.load(f)
                 self.labels = metadata['labels']
                 self.class_to_id = metadata['label_to_id']
-            return None, None
-
+                self.id_to_class = {v: k for k, v in self.class_to_id.items()}
+    
     def extract_features(self, images):
-        """Extract ViT embeddings (CLS token)"""
-        inputs = self.processor(images=images, return_tensors="pt", padding=True).to(self.device)
-        with torch.no_grad():
-            outputs = self.model(**inputs)
-        return outputs.last_hidden_state[:, 0, :].cpu().numpy()  # CLS token
+            """Trích xuất đặc trưng với ArcFace normalization"""
+            with torch.no_grad():
+                features = self.model(images)  # MambaVision output
+                features = self.arcface(features)  # Áp dụng ArcFace
+            return features.cpu().numpy()
 
-    def build_and_save_faiss_index(self, features, save_path=None): # save_path = faiss index path
+    def build_and_save_faiss_index(self, features, save_path=None):
         """Create FAISS index for fast similarity search"""
         dim = features.shape[1]
-        self.index = faiss.IndexFlatL2(dim)  # L2 distance
+        self.index = faiss.IndexFlatIP(dim)  # Using Inner Product for cosine similarity
         self.index.add(features.astype('float32'))
 
-        #Save index and metadata
-        faiss.write_index(self.index, save_path + '.faiss') # Save index
+        # Save index and metadata
+        if save_path:
+            faiss.write_index(self.index, save_path + '.faiss')
+            with open(f"{save_path}_metadata.pkl", "wb") as f:
+                pickle.dump({
+                    "labels": self.labels,
+                    "label_to_id": self.class_to_id
+                }, f)
+    
+    def train(self, faiss_index_path=None):
+        """Train the model and save the FAISS index"""
+        images = []
+        labels = []
+        
+        # Load images and labels
+        for class_name in tqdm(os.listdir(self.src_dir), desc="Loading images"):
+            class_dir = os.path.join(self.src_dir, class_name)
+            if os.path.isdir(class_dir):
+                for img_name in os.listdir(class_dir):
+                    img_path = os.path.join(class_dir, img_name)
+                    if img_path.lower().endswith(('.png', '.jpg', '.jpeg')):
+                        try:
+                            img = cv2.imread(img_path)
+                            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                            images.append(img)
+                            labels.append(class_name)
+                        except Exception as e:
+                            print(f"Error loading {img_path}: {e}")
 
-        with open(f"{save_path}_metadata.pkl", "wb") as f:
-            pickle.dump({"labels": self.labels, "label_to_id": self.class_to_id}, f) # Save metadata, metadata include labels and mapping from label to id , or we can call it class_to_id 
+        # Create label mappings
+        unique_labels = sorted(set(labels))
+        self.class_to_id = {label: i for i, label in enumerate(unique_labels)}
+        self.id_to_class = {i: label for label, i in self.class_to_id.items()}
+        
+        # Convert labels to IDs
+        label_ids = [self.class_to_id[label] for label in labels]
+        self.labels = label_ids
+
+        # Extract features
+        features = self.extract_features(images)
+
+        # Build and save FAISS index
+        self.build_and_save_faiss_index(features, save_path=faiss_index_path)
 
     def add_new_user(self, img_paths, user_name, faiss_index_path, metadata_path):
         """Add new user embedding to Faiss index"""
-        if self.index is None: 
-            self.index, self.labels, self.class_to_id = self.load_data(train = False, faiss_index_path = faiss_index_path, metadata_path = metadata_path)
-
+        # Load existing index and metadata
+        self.load_data(faiss_index_path, metadata_path)
+        
+        # Assign ID for new user
         if user_name not in self.class_to_id:
-            self.class_to_id[user_name] = len(self.class_to_id)
-
-        for img_path in img_paths:
-            img = cv2.imread(img_path)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            embedding = self.extract_features([img])
-            self.index.add(embedding.astype('float32'))
-        self.labels.append(self.class_to_id[user_name])
-        print(f"Added user: {user_name}")
-        # Save updated Index and metadata
-        faiss.write_index(self.index, faiss_index_path)
-        with open(metadata_path, "wb") as f:
-            pickle.dump({"labels": self.labels, "label_to_id": self.class_to_id}, f)
-
-
-    def recognize_face_1(self, query_img_path, threshold=0.9):
-        """Recognize face using FAISS search"""
-        img = cv2.cvtColor(cv2.imread(query_img_path), cv2.COLOR_BGR2RGB)
-        query_embed = self.extract_features([img])
+            new_id = len(self.class_to_id)
+            self.class_to_id[user_name] = new_id
+            self.id_to_class[new_id] = user_name
         
-        D, I = self.index.search(query_embed.astype('float32'), k=1)
-        distance = D[0][0]
-        pred_id = self.labels[I[0][0]]
+        user_id = self.class_to_id[user_name]
         
-        # Convert distance to cosine similarity (assuming embeddings are normalized)
-        similarity = 1 - distance / 2  
-        if similarity > threshold:
-            user_name = [k for k, v in self.class_to_id.items() if v == pred_id][0]
-            return user_name, similarity
-        else:
-            return "Unknown", similarity
-    # recognize_face for list of images
-
-    def recognize_face_2(self, query_img_list, threshold=0.9):
-        """Recognize face using FAISS search"""
-        #
-        results = []
-        for image in query_img_list:
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-            query_embed = self.extract_features([image])
-
-            D, I = self.index.search(query_embed.astype('float32'), k=1)
-            distance = D[0][0]
-            pred_id = self.labels[I[0][0]]
-            # Convert distance to cosine similarity (assuming embeddings are normalized)
-            similarity = 1 - distance / 2  
-            if similarity > threshold:
-                user_name = [k for k, v in self.class_to_id.items() if v == pred_id][0]
-                results.append((user_name, pred_id, similarity))
-            else:
-                results.append(("Unknown", pred_id, similarity))
-
-        return results
+        # Process new images
+        new_embeddings = []
+        for img_path in img_paths[:5]:
+            try:
+                img = cv2.imread(img_path)
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                embedding = self.extract_features([img])
+                new_embeddings.append(embedding)
+                self.labels.append(user_id)
+            except Exception as e:
+                print(f"Error processing {img_path}: {e}")
+        
+        if new_embeddings:
+            new_embeddings = np.vstack(new_embeddings)
+            self.index.add(new_embeddings.astype('float32'))
             
+            # Save updated index and metadata
+            faiss.write_index(self.index, faiss_index_path)
+            with open(metadata_path, "wb") as f:
+                pickle.dump({
+                    "labels": self.labels,
+                    "label_to_id": self.class_to_id
+                }, f)
+            
+            print(f"Added {len(new_embeddings)} embeddings for user: {user_name}")
+        else:
+            print("No valid images found for the new user")
+
+    def recognize_face(self, query_img, threshold=0.9):
+        """
+        Recognize face using FAISS search
+        
+        Args:
+            query_img: numpy.ndarray - Input face image (BGR format)
+            threshold: float - Similarity threshold for recognition
+            top_k: int - Number of top matches to return
+            
+        Returns:
+            List of tuples (user_name, similarity) for top_k matches
+        """
+        if query_img is None or query_img.size == 0:
+            return [("Invalid Image", 0.0)]
+        
+        try:
+            # Convert to RGB and extract features
+            query_embed = self.extract_features([query_img])
+            
+            # Search in FAISS index (using inner product for cosine similarity)
+            similarities, indices = self.index.search(query_embed.astype('float32'), k=1)
+            
+            pred_id = self.labels[indices[0][0]]
+            similarity = float(similarities[0][0])  # Convert numpy float to Python float
+            user_name = self.id_to_class.get(pred_id, "Unknown")
+                
+            if similarity > threshold:
+                return [(user_name, similarity)]
+            else:
+                return [("Unknown", 0.0)]
+        except Exception as e:
+            print(f"Error in face recognition: {e}")
+            return [("Error", 0.0)]
+
+#|%%--%%| <jVldExvb46|0GHGEMZjBH>
+
 # Usage Example
-if __name__ == "__main__":
-    vit = ViTFaceRecognition(src_dir= os.path.join('train_img'))
-    images, labels = vit.load_data(train=True, faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
-    #features = vit.extract_features(images)
-    #vit.build_and_save_faiss_index(features, save_path='faiss_index') #if file is not exist, you have to train index for images
+#vit = ViTFaceRecognition(src_dir= 'train_img/')
+
+    # Train the model and save the FAISS index
+#vit.train(faiss_index_path='faiss_index')
+
+#|%%--%%| <0GHGEMZjBH|0Z708JLZE3>
+    # Load the index and metadata
+#vit.load_data(faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
+#print(vit.index.ntotal) # Print number of images in index
+#|%%--%%| <0Z708JLZE3|Ex0W471JSf>
+
     # Test recognition
-    result, score = vit.recognize_face_1('train_img/Long/cropped_face_10.jpg')
-    print(f"Recognized: {result} (Score: {score:.2f})")
+#result = vit.recognize_face(cv2.imread('train_img/Long/cropped_face_2.jpg'), top_k=3)
+#print(f"Recognized: {result[0][0]} (Score: {result[0][1]:.2f})")
 
-    # Test new User
-#    usr_dir = 'train_img/Michael_Powell'
-#    paths_new_user = os.listdir(usr_dir)
-#    usr_paths = [os.path.join(usr_dir, path) for path in paths_new_user]
-#    vit.add_new_user(usr_paths, 'Michael_Powell', faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
-    # Test recognition after adding new user
+    
+#|%%--%%| <Ex0W471JSf|zMQsYA7mP2>
 
-#|%%--%%| <QmmjrfLpJ4|0N46Aqd1NS>
-    
-    image = cv2.imread('train_img/Michael_Powell/Michael_Powell_0002.jpg')
-    image = [image]    
-    result = vit.recognize_face_2(image)
-    print(result)
-    
+
+#img_path = 'Datasets/D0010'
+#add_new_user = os.listdir(img_path)
+#add_new_user = [os.path.join(img_path, path) for path in add_new_user] # Lay duong dan de cac anh cua ID
+
+#vit.add_new_user(add_new_user, 'D0010', faiss_index_path='faiss_index.faiss', metadata_path='faiss_index_metadata.pkl')
+#|%%--%%| <zMQsYA7mP2|b4iawZogYP>
+# Test recognition after adding new user
+#result = vit.recognize_face(cv2.imread('Datasets/D001/face_1.png'), top_k=3)
+#print(f"Recognized: {result[0][0]} (Score: {result[0][1]:.2f})")

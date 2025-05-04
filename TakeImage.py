@@ -45,7 +45,7 @@ class TakeImage:
         self.btn_back.place(x=750, y=400)
 
         # Start Video Capture
-        self.cap = self.FaceDetection.cap
+        self.cap = cv2.VideoCapture(0)
         self.update_video_frame()
 
         # Handle window close
@@ -134,6 +134,9 @@ class TakeImage:
 
     def take_image(self):
         """Capture and save an image."""
+        if self.FaceDetection.index >= 100:
+            self.on_close()
+            return
         face_crop = self.face
         face_crop = cv2.cvtColor(face_crop, cv2.COLOR_RGB2BGR)  # Convert back to BGR for saving
         if face_crop is not None:
@@ -150,12 +153,10 @@ class TakeImage:
                 pass
             path_file = os.path.join(root_dir, filename)
             cv2.imwrite(path_file, face_crop)
-            print(f"Ảnh được lưu: {path_file}")
-            self.FaceDetection.index += 1  # Tăng số thứ tự file ảnh
-
+            self.FaceDetection.index += 1  
         else:
             messagebox.showerror("Error", "Failed to capture image.")
-
+        self.root.after(100, self.take_image)
     def on_close(self):
         """Handle the window close event."""
         self.cap.release()

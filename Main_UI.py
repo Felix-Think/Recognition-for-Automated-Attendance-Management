@@ -80,9 +80,10 @@ class Main_UI:
                   )
         Exit_bt.place(relx=0.5, rely=0.9, anchor='center')
 
+        
     def open_attendance(self):
-        self.root.withdraw()
-        Attendance(self.root)
+        self.root.withdraw()  # Ẩn cửa sổ chính
+        Attendance(self.root, self.root)  # Truyền self (Main_UI instance)
 
     def open_register(self):
         self.root.withdraw()
