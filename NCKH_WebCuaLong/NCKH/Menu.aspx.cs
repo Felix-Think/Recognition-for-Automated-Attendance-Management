@@ -89,10 +89,44 @@ namespace NCKH
                             bool workStatus = Convert.ToBoolean(reader["work_status"]);
                             lblStatus.Text = workStatus ? "Đang làm" : "Đã nghỉ";
                             statusBadge.Attributes["class"] = workStatus ? "badge active" : "badge inactive";
+
+                            // Tải lương tháng hiện tại
+                            LoadMonthlySalary(reader["employee_id"].ToString());
                         }
                         else
                         {
                             lblName.Text = "Không tìm thấy thông tin nhân viên.";
+                        }
+                    }
+                }
+            }
+        }
+
+        private void LoadMonthlySalary(string employeeId)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand("Get_Employee_Monthly_Info", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@p_thang", DateTime.Now.Month);
+                    cmd.Parameters.AddWithValue("@p_nam", DateTime.Now.Year);
+                    cmd.Parameters.AddWithValue("@p_employee_id", employeeId);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string info = reader["Thông tin"].ToString();
+                            string value = reader["Giá trị"].ToString();
+
+                            if (info == "Thực nhận")
+                            {
+                                lblSalary.Text = string.IsNullOrEmpty(value) ? "0 VNĐ" : value + " VNĐ";
+                                break;
+                            }
                         }
                     }
                 }

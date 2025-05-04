@@ -123,6 +123,7 @@
     <Content Include="CSS\StyleAdmin.css" />
     <Content Include="CSS\StyleUser.css" />
     <Content Include="Menu.aspx" />
+    <Content Include="TinhLuong.aspx" />
     <Content Include="Web.config" />
     <Content Include="Login.aspx" />
   </ItemGroup>
@@ -156,6 +157,13 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TinhLuong.aspx.cs">
+      <DependentUpon>TinhLuong.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TinhLuong.aspx.designer.cs">
+      <DependentUpon>TinhLuong.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

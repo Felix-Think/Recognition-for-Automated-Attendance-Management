@@ -174,12 +174,7 @@ namespace NCKH
             GridViewRow row = employeesTable.Rows[e.RowIndex];
             string empID = employeesTable.DataKeys[e.RowIndex].Value.ToString();
             string name = ((TextBox)row.FindControl("txtEditFullName")).Text.Trim();
-            string genderText = ((DropDownList)row.FindControl("ddlEditGender")).SelectedValue;
-            string gender = genderText == "Nam" ? "M" :
-
-              genderText == "Nữ" ? "F" :
-
-              genderText == "Other" ? "O" : "";
+            string gender = ((DropDownList)row.FindControl("ddlEditGender")).SelectedValue;
             string departmentID = ((DropDownList)row.FindControl("ddlEditDept")).SelectedValue;
             string position = ((TextBox)row.FindControl("txtEditPosition")).Text.Trim();
 
@@ -292,7 +287,9 @@ namespace NCKH
             LoadAttendance();
         }
 
-
-
+        protected void btnGoSalary_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("TinhLuong.aspx");
+        }
     }
 }

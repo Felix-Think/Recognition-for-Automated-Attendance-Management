@@ -1,0 +1,208 @@
+﻿/* Reset một số mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f9fafb;
+    color: #111827;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+/* Grid layout */
+.grid {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 1.5rem;
+}
+
+/* Card styles */
+.card {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+}
+
+.card-header {
+    margin-bottom: 1rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.card-description {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+/* Tabs */
+.tabs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.tab-button {
+    background-color: #f3f4f6;
+    color: #111827;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+    .tab-button:hover {
+        background-color: #e5e7eb;
+    }
+
+    .tab-button.active {
+        background-color: #2563eb;
+        color: white;
+    }
+
+/* Tables */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+    .table th,
+    .table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #e5e7eb;
+        text-align: left;
+    }
+
+    .table th {
+        background-color: #f9fafb;
+        font-weight: 600;
+    }
+
+.table-striped tr:nth-child(odd) {
+    background-color: #f9fafb;
+}
+
+.table td input[type="text"] {
+    max-width: 150px; /* Hoặc width: 150px; */
+    box-sizing: border-box;
+}
+.container {
+    max-width: 1200px; /* hoặc bất kỳ chiều rộng nào bạn muốn */
+    margin: 0 auto; /* canh giữa */
+    padding: 1rem;
+}
+
+/* Badges */
+.badge {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    display: inline-block;
+    text-transform: capitalize;
+}
+
+    .badge.success {
+        background-color: #22c55e;
+        color: white;
+    }
+
+    .badge.destructive {
+        background-color: #ef4444;
+        color: white;
+    }
+
+    .badge.outline {
+        border: 1px solid #d1d5db;
+        color: #374151;
+    }
+/* Search button */
+.search-box {
+    padding: 6px 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-search {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-add {
+    background-color: #2196F3;
+    color: white;
+}
+
+/* edit button */
+
+.form-actions {
+    margin: 10px 0;
+    display: flex;
+    gap: 8px;
+}
+
+.form-grid {
+    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+}
+
+.input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+}
+
+    .button.success {
+        background-color: #28a745;
+    }
+
+    .button.warning {
+        background-color: #ffc107;
+    }
+

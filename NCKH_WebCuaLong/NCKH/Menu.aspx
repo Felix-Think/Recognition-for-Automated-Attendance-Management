@@ -22,6 +22,12 @@
 
             <div class="card-body">
                 <div class="info-item">
+                    <p class="info-label">Salary this Month</p>
+                    <p class="info-value">
+                        <asp:Label ID="lblSalary" runat="server" Text=""></asp:Label>
+                    </p>
+                </div>
+                <div class="info-item">
                     <p class="info-label">Gender</p>
                     <p class="info-value">
                         <asp:Label ID="lblGender" runat="server" Text=""></asp:Label>

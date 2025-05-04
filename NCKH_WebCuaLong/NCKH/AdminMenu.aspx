@@ -34,7 +34,11 @@
                      <div class="form-actions">
                         <asp:TextBox ID="txtSearchEmp" runat="server" CssClass="input" placeholder="Search by Name"></asp:TextBox>
                         <asp:Button ID="btnSearchEmp" runat="server" Text="Search" CssClass="button" OnClick="btnSearchEmp_Click" />
-                     </div>
+
+                        <!-- Nút chuyển sang trang Salary -->
+                        <asp:Button ID="btnGoSalary" runat="server" Text="Go to Salary" CssClass="button btn-add" OnClick="btnGoSalary_Click" />
+                    </div>
+
                      <!-- GridView -->
                      <asp:GridView ID="employeesTable" runat="server" CssClass="table table-striped tr" AutoGenerateColumns="False" 
                         DataKeyNames="employee_id"
@@ -61,9 +65,9 @@
                               </ItemTemplate>
                               <EditItemTemplate>
                                  <asp:DropDownList ID="ddlEditGender" runat="server" CssClass="input">
-                                    <asp:ListItem Text="Male" Value="Male" />
-                                    <asp:ListItem Text="Female" Value="Female" />
-                                    <asp:ListItem Text="Other" Value="Other" />
+                                    <asp:ListItem Text="Male" Value="M" />
+                                    <asp:ListItem Text="Female" Value="F" />
+                                    <asp:ListItem Text="Other" Value="O" />
                                  </asp:DropDownList>
                               </EditItemTemplate>
                            </asp:TemplateField>
