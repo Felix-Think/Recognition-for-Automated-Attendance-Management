@@ -33,7 +33,7 @@ CREATE TABLE Attendance (
     FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
 );
 
-DROP TABLE IF EXISTS Users;
+
 
 CREATE TABLE Users (
     employee_id VARCHAR(20),
