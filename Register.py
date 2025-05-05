@@ -1,50 +1,65 @@
 import tkinter as tk
-import mysql.connector
+import pymysql
 import time
 import cv2
 import os
 from TakeImage import TakeImage
 from PIL import Image, ImageTk
 from ViT_Recognition import ViTFaceRecognition
+import Dino as dino_module
 from tkinter import messagebox
 from functools import partial
-
+import numpy as np
 class Register:
     def __init__(self, root, main_ui):
         self.root = tk.Toplevel(root)
         self.main_ui = main_ui
-        self.vit = None  # Thêm biến vit ở mức class
+        self.model = None
         self.setup_db_connection()
         self.setup_ui()
         self.initialize_face_recognition()
 
     def setup_db_connection(self):
-        """Khởi tạo kết nối database"""
+        """Khởi tạo kết nối database với PyMySQL"""
         DB_CONFIG = {
             'host': 'localhost',
-            'user': 'felix',
+            'user': 'root',
             'password': '5812',
             'database': 'NCKH',
-            'collation': 'utf8mb4_general_ci'
+            'charset': 'utf8mb4',
+            'cursorclass': pymysql.cursors.DictCursor,
+            'autocommit': True,
+            'client_flag': pymysql.constants.CLIENT.MULTI_STATEMENTS  # Thêm dòng này
         }
         try:
-            self.conn = mysql.connector.connect(**DB_CONFIG)
+            self.conn = pymysql.connect(**DB_CONFIG)
             self.cursor = self.conn.cursor()
-        except mysql.connector.Error as err:
-            messagebox.showerror("Database Error", f"Kết nối database thất bại: {err}")
+            
+            # Đặt collation phù hợp với database
+            self.cursor.execute("SET NAMES utf8mb4 COLLATE utf8mb4_0900_ai_ci")
+            
+            # Test query
+            self.cursor.execute("SELECT 1 AS test_connection")
+            result = self.cursor.fetchone()
+            print("Kết nối database thành công:", result)
+        
+        except pymysql.Error as err:
+            error_msg = f"Lỗi database trong ứng dụng: {err}\n"
+            error_msg += f"Thông tin kết nối: {DB_CONFIG}"
+            messagebox.showerror("Database Error", error_msg)
             self.root.destroy()
+            raise    
 
     def initialize_face_recognition(self):
-        """Khởi tạo model nhận diện khuôn mặt"""
         try:
-            self.vit = ViTFaceRecognition(src_dir=None)
+            self.model = dino_module.DinoFaceRecognition(src_dir='train_img/')
             if os.path.exists('faiss_index.faiss'):
-                self.vit.load_data(
+                self.model.load_data(
                     faiss_index_path='faiss_index.faiss',
                     metadata_path='faiss_index_metadata.pkl'
                 )
         except Exception as e:
-            messagebox.showerror("Lỗi hệ thống", f"Không thể khởi tạo model nhận diện: {e}")
+            messagebox.showerror("Lỗi hệ thống", f"Không thể khởi tạo model: {e}")
 
     def setup_ui(self):
         """Thiết lập giao diện người dùng"""
@@ -68,20 +83,35 @@ class Register:
 
         # Form fields
         fields = [
-            ("ID", 20, 50),
-            ("NAME", 20, 150),
-            ("DEPARTMENT", 20, 250),
-            ("POSITION", 20, 350)
+            ("FULL NAME", 20, 50),
+            ("BIRTHDAY (YYYY-MM-DD)", 20, 100),
+            ("GENDER", 20, 150),
+            ("DEPARTMENT ID", 20, 200),
+            ("POSITION", 20, 250),
+            ("WORK STATUS", 20, 300)
         ]
         
         for text, x, y in fields:
-            label = tk.Label(self.root, text=text, bg="#00E5FF" if text in ("ID", "NAME") else "#3498DB",
-                            fg="black", font=("Arial", 12, "bold"), width=15, height=2)
+            label = tk.Label(self.root, text=text, bg="#00E5FF" if text in ("FULL NAME", "DEPARTMENT ID") else "#3498DB",
+                            fg="black", font=("Arial", 12, "bold"), width=20, height=2)
             label.place(x=x, y=y)
             
-            entry = tk.Entry(self.root, font=("Arial", 12, "bold"), width=30)
-            entry.place(x=150, y=y)
-            setattr(self, f"entry_{text.lower()}", entry)
+            if text == "GENDER":
+                # Dropdown cho giới tính
+                self.entry_gender = tk.StringVar(value="M")
+                entry = tk.OptionMenu(self.root, self.entry_gender, "M", "F")
+                entry.config(font=("Arial", 12), width=27)
+                entry.place(x=170, y=y)
+            elif text == "WORK STATUS":
+                # Checkbox cho trạng thái làm việc
+                self.entry_work_status = tk.BooleanVar(value=True)
+                entry = tk.Checkbutton(self.root, variable=self.entry_work_status, text="Active",
+                                     font=("Arial", 12), bg="#2C3E50", fg="white", selectcolor="#2C3E50")
+                entry.place(x=170, y=y)
+            else:
+                entry = tk.Entry(self.root, font=("Arial", 12, "bold"), width=30)
+                entry.place(x=170, y=y)
+                setattr(self, f"entry_{text.lower().replace(' (yyyy-mm-dd)', '').replace(' ', '_')}", entry)
 
         # Buttons
         buttons = [
@@ -99,24 +129,43 @@ class Register:
 
     def validate_inputs(self):
         """Kiểm tra các trường input"""
-        if not all([
-            self.entry_id.get().strip(),
-            self.entry_name.get().strip(),
-            self.entry_department.get().strip(),
+        fields = [
+            self.entry_full_name.get().strip(),
+            self.entry_birthday.get().strip(),
+            self.entry_gender.get(),
+            self.entry_department_id.get().strip(),
             self.entry_position.get().strip()
-        ]):
+        ]
+        if not all(fields):
             messagebox.showerror("Lỗi", "Vui lòng điền đầy đủ thông tin!")
             return False
+        
+        # Kiểm tra định dạng ngày sinh
+        try:
+            time.strptime(self.entry_birthday.get(), '%Y-%m-%d')
+        except ValueError:
+            messagebox.showerror("Lỗi", "Ngày sinh phải có định dạng YYYY-MM-DD!")
+            return False
+            
+        # Kiểm tra department_id
+        self.cursor.execute("SELECT 1 FROM Department WHERE department_id = %s", 
+                          (self.entry_department_id.get(),))
+        if not self.cursor.fetchone():
+            messagebox.showerror("Lỗi", "Mã phòng ban không tồn tại!")
+            return False
+            
         return True
 
     def get_infor_register(self):
         """Lấy thông tin từ form"""
         return (
-            self.entry_id.get().strip(),
-            self.entry_name.get().strip(),
-            self.entry_department.get().strip(),
+            self.entry_full_name.get().strip(),
+            self.entry_birthday.get().strip(),
+            self.entry_gender.get(),
+            self.entry_department_id.get().strip(),
             self.entry_position.get().strip(),
-            time.strftime('%Y-%m-%d')
+            time.strftime('%Y-%m-%d'),  # hire_date
+            1 if self.entry_work_status.get() else 0  # work_status
         )
 
     def take_register(self):
@@ -126,23 +175,56 @@ class Register:
             
         try:
             new_employee = self.get_infor_register()
-            self.cursor.callproc("Insert_Employees", new_employee)
+            
+            # Sửa cách gọi stored procedure
+            self.cursor.callproc("sp_AddEmployee", [
+                new_employee[0],  # full_name
+                new_employee[1],  # birthday
+                new_employee[2],  # gender
+                new_employee[3],  # department_id
+                new_employee[4],  # position
+                new_employee[5],  # hire_date
+                new_employee[6]   # work_status
+            ])
             self.conn.commit()
             
+            # Lấy employee_id vừa tạo
+            self.cursor.execute("""
+                SELECT employee_id FROM Employees 
+                WHERE full_name = %s AND birthday = %s
+                ORDER BY hire_date DESC LIMIT 1
+            """, (new_employee[0], new_employee[1]))
+            
+            emp_id = self.cursor.fetchone()['employee_id']
+            
             # Tạo thư mục lưu ảnh
-            os.makedirs(os.path.join("Datasets", new_employee[0]), exist_ok=True)
-            self.open_TakeImage(new_employee[0])
-        except mysql.connector.Error as err:
-            messagebox.showerror("Database Error", f"Lỗi database: {err}")
+            os.makedirs(os.path.join("Datasets", emp_id), exist_ok=True)
+            self.open_TakeImage(emp_id)
+            
+        except pymysql.Error as err:
+            messagebox.showerror("Database Error", 
+                f"Lỗi database: {err}\n"
+                f"Kiểm tra:\n"
+                f"1. Stored procedure sp_AddEmployee có tồn tại?\n"
+                f"2. Các tham số có đúng thứ tự?")
         except Exception as e:
-            messagebox.showerror("Lỗi hệ thống", f"Có lỗi xảy ra: {e}")
+            messagebox.showerror("Lỗi hệ thống", f"Có lỗi xảy ra: {str(e)}")
 
     def get_img(self):
         """Hiển thị ảnh đại diện"""
-        img_id = self.entry_id.get().strip()
+        img_id = self.entry_department_id.get().strip()
         if not img_id:
             return
             
+        # Sử dụng employee_id thay vì department_id
+        self.cursor.execute("SELECT employee_id FROM Employees WHERE department_id = %s LIMIT 1",
+                          (img_id,))
+        result = self.cursor.fetchone()
+        if not result:
+            self.img_label.config(image=None, text="CHƯA CÓ ẢNH")
+            return
+        img_id = result['employee_id']
+        
         img_path = os.path.join("Datasets", img_id)
         
         try:
@@ -180,7 +262,15 @@ class Register:
         if not self.validate_inputs():
             return
             
-        label = self.entry_id.get().strip()
+        # Sử dụng employee_id thay vì department_id
+        self.cursor.execute("SELECT employee_id FROM Employees WHERE full_name = %s AND birthday = %s",
+                          (self.entry_full_name.get(), self.entry_birthday.get()))
+        result = self.cursor.fetchone()
+        if not result:
+            messagebox.showerror("Lỗi", "Không tìm thấy nhân viên vừa đăng ký!")
+            return
+        label = result['employee_id']
+        
         src_dir = os.path.join('Datasets', label)
         
         try:
@@ -200,18 +290,38 @@ class Register:
                 
             # Thêm vào hệ thống nhận diện
             if not os.path.exists('faiss_index.faiss'):
-                self.vit.train(faiss_index_path='faiss_index')
-            else:
-                self.vit.add_new_user(
-                    usr_paths, 
-                    label,
-                    faiss_index_path='faiss_index.faiss',
-                    metadata_path='faiss_index_metadata.pkl'
-                )
-            
-            messagebox.showinfo("Thành công", f"Đã đăng ký thành công nhân viên {label}")
+                self.model.train_in_batches(faiss_index_path='faiss_index', batch_size=1)
+
+            images = []
+            for img_path in usr_paths:
+                img = cv2.imread(img_path)
+                if img is not None:
+                    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                    images.append(img)
+
+            augmented_imgs = self.model.augment_image(images, augment_ratio=0.4)
+            images.extend(augmented_imgs)
+
+            if label not in self.model.class_to_id:
+                new_id = len(self.model.class_to_id)
+                self.model.class_to_id[label] = new_id
+                self.model.id_to_class[new_id] = label
+
+            user_id = self.model.class_to_id[label]
+
+            features = self.model.extract_features(images, normalize=False)
+            if features is None:
+                messagebox.showerror("Lỗi", "Không thể trích xuất đặc trưng từ ảnh!")
+                return
+
+            mean_vector = np.mean(features, axis=0, keepdims=True)
+            self.model.index.add(mean_vector.astype('float32'))
+            self.model.labels.append(user_id)
+            self.model.save_index('faiss_index')
+
+            messagebox.showinfo("Thành công", f"Thêm nhân viên {label} thành công")
         except Exception as e:
-            messagebox.showerror("Lỗi hệ thống", f"Có lỗi khi đăng ký: {e}")
+            messagebox.showerror("Lỗi", f"Có lỗi xảy ra trong quá trình thêm nhân viên: {e}")
 
     def update_image_after_return(self):
         """Callback sau khi chụp ảnh xong"""
