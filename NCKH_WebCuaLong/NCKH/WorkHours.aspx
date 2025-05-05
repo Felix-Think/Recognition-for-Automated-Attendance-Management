@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Chi tiết giờ làm</title>
+    <title>Working Hours Details</title>
     <link rel="stylesheet" href="CSS/StyleUser .css" />
     <style>
         body {
@@ -73,7 +73,7 @@
     <form id="form1" runat="server">
         <div class="card">
             <div class="card-header">
-                <h1>Chi tiết giờ làm</h1>
+                <h1>Working Hours Details</h1>
             </div>
 
             <div class="card-body">
@@ -84,10 +84,10 @@
                 <table class="work-hours-table">
                     <thead>
                         <tr>
-                            <th>Ngày làm</th>
-                            <th>Giờ vào</th>
-                            <th>Giờ ra</th>
-                            <th>Số giờ làm</th>
+                            <th>Work Date</th>
+                            <th>Check-in Time</th>
+                            <th>Check-out Time</th>
+                            <th>Hours Worked</th>
                         </tr>
                     </thead>
                     <tbody id="workHoursTable" runat="server">

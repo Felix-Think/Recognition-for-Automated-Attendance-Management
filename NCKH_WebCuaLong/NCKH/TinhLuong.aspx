@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Hiển Thị Lương Nhân Viên</title>
+    <title>Employee Salary Details</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -90,26 +90,26 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <h2>Hiển Thị Lương Nhân Viên</h2>
+        <h2>Employee Salary Details</h2>
         <div>
-            <label for="ddlMonth">Chọn Tháng:</label>
+            <label for="ddlMonth">Select Month:</label>
             <asp:DropDownList ID="ddlMonth" runat="server" AutoPostBack="false"></asp:DropDownList>
 
-            <label for="ddlYear">Chọn Năm:</label>
+            <label for="ddlYear">Select Years:</label>
             <asp:DropDownList ID="ddlYear" runat="server" AutoPostBack="false"></asp:DropDownList>
 
-            <asp:Button ID="btnLoad" runat="server" Text="Xem Lương" OnClick="btnLoad_Click" />
+            <asp:Button ID="btnLoad" runat="server" Text="View Salary" OnClick="btnLoad_Click" />
         </div>
 
         <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false" GridLines="None" AlternatingRowStyle-BackColor="#f2f2f2" Width="100%">
             <Columns>
-                <asp:BoundField DataField="employee_id" HeaderText="Mã NV" ItemStyle-Width="10%" />
-                <asp:BoundField DataField="full_name" HeaderText="Tên NV" ItemStyle-Width="20%" />
-                <asp:BoundField DataField="total_hours" HeaderText="Tổng Giờ Làm" DataFormatString="{0:N2}" ItemStyle-Width="10%" />
-                <asp:BoundField DataField="overtime_hours" HeaderText="Giờ Tăng Ca" DataFormatString="{0:N2}" ItemStyle-Width="10%" />
-                <asp:BoundField DataField="hourly_wage" HeaderText="Lương 1 Giờ (VNĐ)" DataFormatString="{0:N0}" ItemStyle-Width="10%" />
-                <asp:BoundField DataField="salary_coefficient" HeaderText="Hệ Số Lương" DataFormatString="{0:N2}" ItemStyle-Width="10%" />
-                <asp:BoundField DataField="total_salary" HeaderText="Tổng Lương (VNĐ)" DataFormatString="{0:N0}" ItemStyle-Width="15%" />
+                <asp:BoundField DataField="employee_id" HeaderText="Employee ID" ItemStyle-Width="10%" />
+                <asp:BoundField DataField="full_name" HeaderText="Employee Name" ItemStyle-Width="20%" />
+                <asp:BoundField DataField="total_hours" HeaderText="Total Hours Worked" DataFormatString="{0:N2}" ItemStyle-Width="10%" />
+                <asp:BoundField DataField="overtime_hours" HeaderText="Overtime Hours" DataFormatString="{0:N2}" ItemStyle-Width="10%" />
+                <asp:BoundField DataField="hourly_wage" HeaderText="Hourly Wage (VND)" DataFormatString="{0:N0}" ItemStyle-Width="10%" />
+                <asp:BoundField DataField="salary_coefficient" HeaderText="Salary Coefficient" DataFormatString="{0:N2}" ItemStyle-Width="10%" />
+                <asp:BoundField DataField="total_salary" HeaderText="Total Salary (VND)" DataFormatString="{0:N0}" ItemStyle-Width="15%" />
             </Columns>
         </asp:GridView>
     </form>

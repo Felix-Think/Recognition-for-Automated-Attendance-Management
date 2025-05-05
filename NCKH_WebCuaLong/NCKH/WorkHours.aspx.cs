@@ -22,7 +22,7 @@ namespace NCKH
 
             if (string.IsNullOrEmpty(username))
             {
-                lblEmployeeName.Text = "Không tìm thấy tài khoản.";
+                lblEmployeeName.Text = "Account not found.";
                 return;
             }
 
@@ -33,7 +33,7 @@ namespace NCKH
                 string employeeId = GetEmployeeId(conn, username);
                 if (string.IsNullOrEmpty(employeeId))
                 {
-                    lblEmployeeName.Text = "Không tìm thấy nhân viên.";
+                    lblEmployeeName.Text = "Employee not found.";
                     return;
                 }
 
@@ -80,7 +80,7 @@ namespace NCKH
                             workHoursTable.InnerHtml += $"<tr><td>{workDate}</td><td>{checkIn}</td><td>{checkOut}</td><td>{hoursWorked}</td></tr>";
                         }
 
-                        lblSummary.Text = $"Số ngày làm: {workDays} ngày<br/>Tổng số giờ làm: {totalHours} giờ";
+                        lblSummary.Text = $"Days Worked: {workDays} days<br/>Total Hours Worked: {totalHours} hours";
                     }
                 }
             }
@@ -93,7 +93,7 @@ namespace NCKH
             {
                 cmd.Parameters.AddWithValue("@employeeId", employeeId);
                 object result = cmd.ExecuteScalar();
-                return result != null ? result.ToString() : "Không rõ";
+                return result != null ? result.ToString() : "Unknown";
             }
         }
 
