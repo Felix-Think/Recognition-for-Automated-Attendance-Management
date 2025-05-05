@@ -6,6 +6,8 @@ import PoseDetection as FP
 import FaceDetection as FD
 import os 
 import numpy as np
+from pydub import AudioSegment
+from pydub.playback import play
 class TakeImage:
     def __init__(self, root,ID, callback = None):
         self.FacePose = FP.PoseDetection()
@@ -133,8 +135,15 @@ class TakeImage:
         self.root.after(10, self.update_video_frame)
 
     def take_image(self):
+        sound_path = os.path.join("sounds", "takeimage_start.mp3")
+        play(AudioSegment.from_file(sound_path, format="mp3"))
+        self.capture()
+
+    def capture(self):
         """Capture and save an image."""
         if self.FaceDetection.index >= 100:
+            sound_path = os.path.join("sounds", "takeimage_end.mp3")
+            play(AudioSegment.from_file(sound_path, format="mp3"))
             self.on_close()
             return
         face_crop = self.face
@@ -156,12 +165,13 @@ class TakeImage:
             self.FaceDetection.index += 1  
         else:
             messagebox.showerror("Error", "Failed to capture image.")
-        self.root.after(100, self.take_image)
+        self.root.after(100, self.capture)#
     def on_close(self):
         """Handle the window close event."""
         self.cap.release()
         self.root.destroy()
         if self.callback:
+            sound_path = os.path.join("sounds", "RegisterCheck.mp3")
+            play(AudioSegment.from_file(sound_path, format="mp3"))
             self.callback()
         self.preroot.deiconify()
-

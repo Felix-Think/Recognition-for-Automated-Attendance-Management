@@ -5,11 +5,12 @@ import cv2
 import os
 from TakeImage import TakeImage
 from PIL import Image, ImageTk
-from ViT_Recognition import ViTFaceRecognition
 import Dino as dino_module
 from tkinter import messagebox
 from functools import partial
 import numpy as np
+from pydub import AudioSegment
+from pydub.playback import play
 class Register:
     def __init__(self, root, main_ui):
         self.root = tk.Toplevel(root)
@@ -18,7 +19,8 @@ class Register:
         self.setup_db_connection()
         self.setup_ui()
         self.initialize_face_recognition()
-
+        time.sleep(2)
+        play(AudioSegment.from_file("sounds/InputInfo.mp3"))
     def setup_db_connection(self):
         """Khởi tạo kết nối database với PyMySQL"""
         DB_CONFIG = {
@@ -50,17 +52,26 @@ class Register:
             self.root.destroy()
             raise    
 
+
     def initialize_face_recognition(self):
         try:
-            self.model = dino_module.DinoFaceRecognition(src_dir='train_img/')
-            if os.path.exists('faiss_index.faiss'):
+            self.model = dino_module.DinoFaceRecognition(src_dir='Datasets')
+            
+            # Kiểm tra nếu file FAISS không tồn tại, tạo FAISS index mới
+            faiss_index_path = 'faiss_index.faiss'
+            if os.path.exists(faiss_index_path):
                 self.model.load_data(
-                    faiss_index_path='faiss_index.faiss',
+                    faiss_index_path=faiss_index_path,
                     metadata_path='faiss_index_metadata.pkl'
                 )
-        except Exception as e:
-            messagebox.showerror("Lỗi hệ thống", f"Không thể khởi tạo model: {e}")
+            else:
+                print("FAISS index không tồn tại, tạo index mới.")
+                # Tạo một index mới nếu không tìm thấy file
+                self.model.create_empty_index()  # Hàm này tạo index trống, bạn cần phải định nghĩa trong Dino module
+                # Nếu bạn có metadata, có thể cần phải xử lý thêm.
 
+        except Exception as e:
+                messagebox.showerror("Lỗi hệ thống", f"Không thể khởi tạo model: {e}")
     def setup_ui(self):
         """Thiết lập giao diện người dùng"""
         self.root.title("Register")
@@ -137,21 +148,24 @@ class Register:
             self.entry_position.get().strip()
         ]
         if not all(fields):
-            messagebox.showerror("Lỗi", "Vui lòng điền đầy đủ thông tin!")
+            path_sounds = os.path.join("sounds", "InputFail.mp3")
+            play(AudioSegment.from_file(path_sounds), format="mp3")
             return False
         
-        # Kiểm tra định dạng ngày sinh
+        # Kiểm tra định dạng ngày sinh``
         try:
             time.strptime(self.entry_birthday.get(), '%Y-%m-%d')
         except ValueError:
-            messagebox.showerror("Lỗi", "Ngày sinh phải có định dạng YYYY-MM-DD!")
+            path_sounds = os.path.join("sounds", "DateFail.mp3")
+            play(AudioSegment.from_file(path_sounds), format="mp3")
             return False
             
         # Kiểm tra department_id
         self.cursor.execute("SELECT 1 FROM Department WHERE department_id = %s", 
                           (self.entry_department_id.get(),))
         if not self.cursor.fetchone():
-            messagebox.showerror("Lỗi", "Mã phòng ban không tồn tại!")
+            path_sounds = os.path.join("sounds", "DepartFail.mp3")
+            play(AudioSegment.from_file(path_sounds), format="mp3")
             return False
             
         return True
@@ -287,11 +301,7 @@ class Register:
             if not usr_paths:
                 messagebox.showerror("Lỗi", f"Không có ảnh hợp lệ trong thư mục {label}")
                 return
-                
-            # Thêm vào hệ thống nhận diện
-            if not os.path.exists('faiss_index.faiss'):
-                self.model.train_in_batches(faiss_index_path='faiss_index', batch_size=1)
-
+            
             images = []
             for img_path in usr_paths:
                 img = cv2.imread(img_path)
@@ -318,8 +328,8 @@ class Register:
             self.model.index.add(mean_vector.astype('float32'))
             self.model.labels.append(user_id)
             self.model.save_index('faiss_index')
-
-            messagebox.showinfo("Thành công", f"Thêm nhân viên {label} thành công")
+            path_sounds = os.path.join("sounds", "RegisterSuccess.mp3")
+            play(AudioSegment.from_file(path_sounds), format="mp3")
         except Exception as e:
             messagebox.showerror("Lỗi", f"Có lỗi xảy ra trong quá trình thêm nhân viên: {e}")
 

@@ -1,1 +1,1 @@
-{"terminal": "kitty"}
+{"cmd": "\ndino = DinoFaceRecognition(src_dir='train_img/')\n# 🆕 Train with augmentation\ndino.train_in_batches(faiss_index_path = 'faiss_index', batch_size=1)\n", "cmd_opts": " --cell_id=ZhNQRl0r0E -s", "import_complete": 1, "terminal": "kitty"}

@@ -40,6 +40,11 @@ class DinoFaceRecognition:
 
 
 
+
+    def create_empty_index(self):
+        dim = 384  # Kích thước vector (tuỳ thuộc vào mô hình của bạn)
+        self.index = faiss.IndexFlatL2(dim)
+
     
 
     def augment_image(self, image_list, augment_ratio=0.5):
@@ -333,7 +338,7 @@ class DinoFaceRecognition:
 
 # |%%--%%| <NDP26LuFVb|ZhNQRl0r0E>
 
-#dino = DinoFaceRecognition(src_dir='train')
+#dino = DinoFaceRecognition(src_dir='train_img/')
 # 🆕 Train with augmentation
 #dino.train_in_batches(faiss_index_path = 'faiss_index', batch_size=1)
 

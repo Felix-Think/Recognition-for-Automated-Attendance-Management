@@ -11,6 +11,8 @@ import os
 from datetime import datetime
 from tkinter import messagebox
 from FAS import FAS
+from pydub import AudioSegment
+from pydub.playback import play
 
 class Attendance:
     def __init__(self, root, main_ui):
@@ -61,6 +63,8 @@ class Attendance:
                 embedder="mobilenet",
                 half=True
             )
+            path_sounds = os.path.join("sounds", "Ting.mp3")
+            self.tingSound = AudioSegment.from_file(path_sounds,format="mp3")
             self.cap = cv2.VideoCapture(0)
             if not self.cap.isOpened():
                 raise RuntimeError("Could not open video source")
@@ -177,6 +181,7 @@ class Attendance:
                 if name != "Unknown":
                     self.track_info[track_id]['name'] = name
                     self.track_info[track_id]['confidence'] = confidence
+                    play(self.tingSound)
 
             # Xử lý attendance nếu nhận diện khuôn mặt thành công
             
@@ -185,7 +190,7 @@ class Attendance:
                 if not info.get('has_checked', False):
                     self.process_attendance(info['name'], info['status'])
                     self.track_info[track_id]['has_checked'] = True
-            # Đánh dấu track_id là đã được xử lý
+            # Đánh dấu track_id là đã được xử lý         
             processed_tracks.add(track_id)
 
             # Nếu không nhận diện được khuôn mặt, tăng số lần thử
