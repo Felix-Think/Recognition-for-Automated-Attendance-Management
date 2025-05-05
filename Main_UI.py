@@ -3,6 +3,7 @@ from tkinter import Canvas
 from PIL import Image, ImageTk
 from Attendance import Attendance
 from Register import Register
+from View_Attendance import SalaryViewer
 import os
 class Main_UI:
     def __init__(self, root):
@@ -63,7 +64,8 @@ class Main_UI:
 
         View_bt = tk.Button(self.root, 
                   text='VIEW ATTENDANCE', 
-                  **button_style
+                  **button_style,
+                  command=self.open_view
                   )
         View_bt.place(relx=0.8, rely=0.7, anchor='center')
         
@@ -88,3 +90,7 @@ class Main_UI:
     def open_register(self):
         self.root.withdraw()
         Register(self.root, self.root)
+
+    def open_view(self):
+        self.root.withdraw()
+        SalaryViewer(self.root, self.root)
