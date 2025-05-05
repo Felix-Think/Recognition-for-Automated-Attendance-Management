@@ -13,17 +13,25 @@ class ViTFaceRecognition:
         self.src_dir = src_dir
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         
-        # Load pretrained ViT
-        self.processor = ViTImageProcessor.from_pretrained('google/vit-base-patch16-224')
-        self.model = ViTModel.from_pretrained('google/vit-base-patch16-224').to(self.device)
+        # Load pretrained mamba
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model = MambaVision.from_pretrained("state-spaces/mambavision-base").to(self.device)
         self.model.eval()
-        
+
         # Faiss index
         self.index = None
         self.labels = []
         self.class_to_id = {}
         self.id_to_class = {}  # Reverse mapping for faster lookup
     
+        # ArcFace loss
+        self.arcface = ArcFaceLoss(
+                    embedding_size=512,  # Kích thước đặc trưng đầu ra
+                    num_classes=1000,    # Số lớp tối đa (có thể điều chỉnh)
+                    scale=64.0,
+                    margin=0.5
+                ).to(self.device)
+
     def load_data(self, faiss_index_path=None, metadata_path=None):
         """Load images and labels from directory structure: src_dir/class_name/image.jpg"""
         if faiss_index_path and metadata_path:
@@ -34,15 +42,12 @@ class ViTFaceRecognition:
                 self.class_to_id = metadata['label_to_id']
                 self.id_to_class = {v: k for k, v in self.class_to_id.items()}
     
-    def extract_features(self, images, normalize=True):
-        """Extract ViT embeddings (CLS token) with optional normalization"""
-        inputs = self.processor(images=images, return_tensors="pt", padding=True).to(self.device)
-        with torch.no_grad():
-            outputs = self.model(**inputs)
-        embeddings = outputs.last_hidden_state[:, 0, :].cpu().numpy()
-        if normalize:
-            embeddings = embeddings / np.linalg.norm(embeddings, axis=1, keepdims=True)
-        return embeddings
+    def extract_features(self, images):
+            """Trích xuất đặc trưng với ArcFace normalization"""
+            with torch.no_grad():
+                features = self.model(images)  # MambaVision output
+                features = self.arcface(features)  # Áp dụng ArcFace
+            return features.cpu().numpy()
 
     def build_and_save_faiss_index(self, features, save_path=None):
         """Create FAISS index for fast similarity search"""
@@ -109,7 +114,7 @@ class ViTFaceRecognition:
         
         # Process new images
         new_embeddings = []
-        for img_path in img_paths:
+        for img_path in img_paths[:5]:
             try:
                 img = cv2.imread(img_path)
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -135,7 +140,7 @@ class ViTFaceRecognition:
         else:
             print("No valid images found for the new user")
 
-    def recognize_face(self, query_img, threshold=0.9, top_k=1):
+    def recognize_face(self, query_img, threshold=0.9):
         """
         Recognize face using FAISS search
         
@@ -152,24 +157,19 @@ class ViTFaceRecognition:
         
         try:
             # Convert to RGB and extract features
-            query_img = cv2.cvtColor(query_img, cv2.COLOR_BGR2RGB)
             query_embed = self.extract_features([query_img])
             
             # Search in FAISS index (using inner product for cosine similarity)
-            similarities, indices = self.index.search(query_embed.astype('float32'), k=top_k)
+            similarities, indices = self.index.search(query_embed.astype('float32'), k=1)
             
-            results = []
-            for i in range(top_k):
-                pred_id = self.labels[indices[0][i]]
-                similarity = float(similarities[0][i])  # Convert numpy float to Python float
-                user_name = self.id_to_class.get(pred_id, "Unknown")
+            pred_id = self.labels[indices[0][0]]
+            similarity = float(similarities[0][0])  # Convert numpy float to Python float
+            user_name = self.id_to_class.get(pred_id, "Unknown")
                 
-                if similarity > threshold:
-                    results.append((user_name, similarity))
-                else:
-                    results.append(("Unknown", similarity))
-            
-            return results
+            if similarity > threshold:
+                return [(user_name, similarity)]
+            else:
+                return [("Unknown", 0.0)]
         except Exception as e:
             print(f"Error in face recognition: {e}")
             return [("Error", 0.0)]

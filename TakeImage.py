@@ -6,6 +6,8 @@ import PoseDetection as FP
 import FaceDetection as FD
 import os 
 import numpy as np
+from pydub import AudioSegment
+from pydub.playback import play
 class TakeImage:
     def __init__(self, root,ID, callback = None):
         self.FacePose = FP.PoseDetection()
@@ -133,7 +135,14 @@ class TakeImage:
         self.root.after(10, self.update_video_frame)
 
     def take_image(self):
+        play(AudioSegment.from_file("takeimage_start.mp3", format="mp3"))
+        self.capture()
+    def capture(self):
         """Capture and save an image."""
+        if self.FaceDetection.index >= 100:
+            play(AudioSegment.from_file("takeimage_end.mp3", format="mp3"))
+            self.on_close()
+            return
         face_crop = self.face
         face_crop = cv2.cvtColor(face_crop, cv2.COLOR_RGB2BGR)  # Convert back to BGR for saving
         if face_crop is not None:
@@ -150,17 +159,16 @@ class TakeImage:
                 pass
             path_file = os.path.join(root_dir, filename)
             cv2.imwrite(path_file, face_crop)
-            print(f"Ảnh được lưu: {path_file}")
-            self.FaceDetection.index += 1  # Tăng số thứ tự file ảnh
-
+            self.FaceDetection.index += 1  
         else:
             messagebox.showerror("Error", "Failed to capture image.")
-
+        self.root.after(100, self.take_image)
     def on_close(self):
         """Handle the window close event."""
         self.cap.release()
         self.root.destroy()
         if self.callback:
+            play(AudioSegment.from_file("RegisterCheck.mp3", format="mp3"))
             self.callback()
         self.preroot.deiconify()
 

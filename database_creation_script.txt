@@ -1,0 +1,309 @@
+
+-- Câu lệnh tạo bảng
+
+-- Bảng attendance
+DROP TABLE IF EXISTS `attendance`;
+
+CREATE TABLE `attendance` (
+  `attendance_id` varchar(20) NOT NULL,
+  `employee_id` varchar(20) DEFAULT NULL,
+  `work_date` date NOT NULL,
+  `check_in_time` datetime DEFAULT NULL,
+  `check_out_time` datetime DEFAULT NULL,
+  `hours_worked` float DEFAULT NULL,
+  `status_atd` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`attendance_id`),
+  KEY `employee_id` (`employee_id`),
+  CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`)
+);
+
+-- Bảng department
+DROP TABLE IF EXISTS `department`;
+
+CREATE TABLE `department` (
+  `department_id` varchar(10) NOT NULL,
+  `department_name` varchar(100) NOT NULL,
+  PRIMARY KEY (`department_id`)
+);
+
+-- Bảng employees
+DROP TABLE IF EXISTS `employees`;
+
+CREATE TABLE `employees` (
+  `employee_id` varchar(20) NOT NULL,
+  `full_name` varchar(100) NOT NULL,
+  `gender` char(1) DEFAULT NULL,
+  `birthday` date DEFAULT NULL,
+  `department_id` varchar(10) DEFAULT NULL,
+  `position` varchar(50) DEFAULT NULL,
+  `hire_date` date DEFAULT NULL,
+  `work_status` bit(1) DEFAULT NULL,
+  `profile_pic` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`employee_id`),
+  KEY `department_id` (`department_id`),
+  CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `department` (`department_id`)
+);
+
+-- Bảng users
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `employee_id` varchar(20) NOT NULL,
+  `user_name` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`employee_id`,`user_name`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`),
+  CONSTRAINT `users_chk_1` CHECK ((`role` in ('admin','user')))
+);
+
+-- Câu lệnh tạo stored procedures
+
+-- Stored Procedure Delete_Attendance_By_ID
+DROP PROCEDURE IF EXISTS `Delete_Attendance_By_ID`;
+
+DELIMITER ;;
+CREATE PROCEDURE `Delete_Attendance_By_ID`(
+    IN p_attendance_id VARCHAR(20)
+)
+BEGIN
+    DELETE FROM Attendance
+    WHERE attendance_id = p_attendance_id;
+END ;;
+DELIMITER ;
+
+-- Stored Procedure Get_Attendance_Report_ByMonthYear
+DROP PROCEDURE IF EXISTS `Get_Attendance_Report_ByMonthYear`;
+
+DELIMITER ;;
+CREATE PROCEDURE `Get_Attendance_Report_ByMonthYear`(
+    IN in_month INT,
+    IN in_year INT
+)
+BEGIN
+    SELECT 
+        e.employee_id AS 'Mã NV',
+        SUM(CASE WHEN DAY(a.work_date) = 1 THEN a.hours_worked ELSE NULL END) AS '1',
+        SUM(CASE WHEN DAY(a.work_date) = 2 THEN a.hours_worked ELSE NULL END) AS '2',
+        SUM(CASE WHEN DAY(a.work_date) = 3 THEN a.hours_worked ELSE NULL END) AS '3',
+        -- ... (Các ngày tiếp theo tương tự)
+        SUM(CASE WHEN DAY(a.work_date) = 31 THEN a.hours_worked ELSE NULL END) AS '31',
+        31 - COUNT(a.work_date) AS so_ngay_nghi,
+        SUM(CASE WHEN a.hours_worked > 8 THEN a.hours_worked - 8 ELSE 0 END) AS 'Số giờ tăng ca'
+    FROM 
+        Employees e
+    LEFT JOIN 
+        Attendance a ON e.employee_id = a.employee_id
+    WHERE 
+        MONTH(a.work_date) = in_month 
+        AND YEAR(a.work_date) = in_year
+    GROUP BY 
+        e.employee_id;
+END ;;
+DELIMITER ;
+
+-- Stored Procedure sp_AddDepartment
+DROP PROCEDURE IF EXISTS `sp_AddDepartment`;
+
+DELIMITER ;;
+CREATE PROCEDURE `sp_AddDepartment`(
+    IN p_department_id VARCHAR(10),
+    IN p_department_name VARCHAR(100)
+)
+BEGIN
+    -- Kiểm tra phòng ban đã tồn tại hay chưa
+    IF EXISTS (
+        SELECT 1 FROM Department WHERE department_id = p_department_id
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Mã phòng ban đã tồn tại!';
+    END IF;
+
+    -- Thêm phòng ban
+    INSERT INTO Department (department_id, department_name)
+    VALUES (p_department_id, p_department_name);
+END ;;
+DELIMITER ;
+
+-- Stored Procedure sp_AddEmployee
+DROP PROCEDURE IF EXISTS `sp_AddEmployee`;
+
+DELIMITER ;;
+CREATE PROCEDURE `sp_AddEmployee`(
+    IN p_full_name VARCHAR(100),
+    IN p_birthday DATE,
+    IN p_gender CHAR(1),
+    IN p_department_id VARCHAR(10),
+    IN p_position VARCHAR(50),
+    IN p_hire_date DATE,
+    IN p_work_status BIT
+)
+BEGIN
+    -- Kiểm tra phòng ban tồn tại
+    IF NOT EXISTS (
+        SELECT 1 FROM Department WHERE department_id = p_department_id
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Phòng ban không tồn tại!';
+    END IF;
+
+    -- Kiểm tra trùng họ tên + ngày sinh
+    IF EXISTS (
+        SELECT 1 FROM Employees 
+        WHERE full_name = p_full_name AND birthday = p_birthday
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nhân viên đã tồn tại (trùng tên và ngày sinh)!';
+    END IF;
+
+    -- Thêm nhân viên (ID sẽ được trigger tự sinh)
+    INSERT INTO Employees (
+        full_name, birthday, gender, department_id, position, hire_date, work_status
+    )
+    VALUES (
+        p_full_name, p_birthday, p_gender, p_department_id, p_position, p_hire_date, p_work_status
+    );
+END ;;
+DELIMITER ;
+
+-- Stored Procedure sp_CheckInNow
+DROP PROCEDURE IF EXISTS `sp_CheckInNow`;
+
+DELIMITER ;;
+CREATE PROCEDURE `sp_CheckInNow`(
+    IN p_attendance_id VARCHAR(20)
+)
+BEGIN
+    -- Kiểm tra dòng tồn tại
+    IF NOT EXISTS (
+        SELECT 1 FROM Attendance WHERE attendance_id = p_attendance_id
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'attendance_id không tồn tại!';
+    END IF;
+
+    -- Cập nhật check-in là thời gian hiện tại và trạng thái là 1 (đã check in)
+    UPDATE Attendance
+    SET 
+        check_in_time = NOW(),
+        status_atd = 1
+    WHERE attendance_id = p_attendance_id;
+END ;;
+DELIMITER ;
+
+-- Stored Procedure sp_CheckOutNow
+DROP PROCEDURE IF EXISTS `sp_CheckOutNow`;
+
+DELIMITER ;;
+CREATE PROCEDURE `sp_CheckOutNow`(
+    IN p_attendance_id VARCHAR(20)
+)
+BEGIN
+    -- Kiểm tra dòng tồn tại
+    IF NOT EXISTS (
+        SELECT 1 FROM Attendance WHERE attendance_id = p_attendance_id
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'attendance_id không tồn tại!';
+    END IF;
+
+    -- Cập nhật check-out là thời gian hiện tại
+    UPDATE Attendance
+    SET check_out_time = NOW()
+    WHERE attendance_id = p_attendance_id;
+END ;;
+DELIMITER ;
+
+-- Stored Procedure sp_DeleteDepartment
+DROP PROCEDURE IF EXISTS `sp_DeleteDepartment`;
+
+DELIMITER ;;
+CREATE PROCEDURE `sp_DeleteDepartment`(
+    IN p_department_id VARCHAR(10)
+)
+BEGIN
+    -- Kiểm tra mã phòng ban tồn tại
+    IF NOT EXISTS (
+        SELECT 1 FROM Department WHERE department_id = p_department_id
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Phòng ban không tồn tại!';
+    END IF;
+    
+    -- Xóa phòng ban
+    DELETE FROM Department
+    WHERE department_id = p_department_id;
+END ;;
+DELIMITER ;
+
+-- Stored Procedure sp_DeleteEmployee
+DROP PROCEDURE IF EXISTS `sp_DeleteEmployee`;
+
+DELIMITER ;;
+CREATE PROCEDURE `sp_DeleteEmployee`(
+    IN p_employee_id VARCHAR(20)
+)
+BEGIN
+    -- Kiểm tra tồn tại
+    IF NOT EXISTS (
+        SELECT 1 FROM Employees WHERE employee_id = p_employee_id
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Mã nhân viên không tồn tại!';
+    END IF;
+
+    -- Xóa nhân viên
+    DELETE FROM Employees WHERE employee_id = p_employee_id;
+END ;;
+DELIMITER ;
+
+-- Stored Procedure sp_UpdateDepartment
+DROP PROCEDURE IF EXISTS `sp_UpdateDepartment`;
+
+DELIMITER ;;
+CREATE PROCEDURE `sp_UpdateDepartment`(
+    IN p_department_id VARCHAR(10),
+    IN p_department_name VARCHAR(100)
+)
+BEGIN
+    -- Kiểm tra mã phòng ban tồn tại
+    IF NOT EXISTS (
+        SELECT 1 FROM Department WHERE department_id = p_department_id
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Phòng ban không tồn tại!';
+    END IF;
+    
+    -- Cập nhật thông tin phòng ban
+    UPDATE Department
+    SET department_name = p_department_name
+    WHERE department_id = p_department_id;
+END ;;
+DELIMITER ;
+
+-- Stored Procedure sp_UpdateEmployee
+DROP PROCEDURE IF EXISTS `sp_UpdateEmployee`;
+
+DELIMITER ;;
+CREATE PROCEDURE `sp_UpdateEmployee`(
+    IN p_employee_id VARCHAR(20),
+    IN p_full_name VARCHAR(100),
+    IN p_birthday DATE,
+    IN p_gender CHAR(1),
+    IN p_department_id VARCHAR(10),
+    IN p_position VARCHAR(50),
+    IN p_hire_date DATE,
+    IN p_work_status BIT
+)
+BEGIN
+    -- Kiểm tra nhân viên tồn tại
+    IF NOT EXISTS (
+        SELECT 1 FROM Employees WHERE employee_id = p_employee_id
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Mã nhân viên không tồn tại!';
+    END IF;
+
+    -- Cập nhật thông tin
+    UPDATE Employees
+    SET full_name = p_full_name,
+        birthday = p_birthday,
+        gender = p_gender,
+        department_id = p_department_id,
+        position = p_position,
+        hire_date = p_hire_date,
+        work_status = p_work_status
+    WHERE employee_id = p_employee_id;
+END ;;
+DELIMITER ;
